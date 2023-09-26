@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const comicValidator = z.object({
   uploader: z.string(),
+  chapters: z.object({}).array().optional(),
   name: z.string().nonempty("The name is required."),
   description: z.string().nonempty("Please enter description."),
   status: z.string().nonempty("Please choose status."),
@@ -9,6 +10,7 @@ export const comicValidator = z.object({
   tags: z.string().array().nonempty("Please select at least 1 tag."),
   views: z.number(),
   last_update: z.date(),
+  _id: z.string().optional(),
 });
 
 export type ComicType = z.infer<typeof comicValidator>;

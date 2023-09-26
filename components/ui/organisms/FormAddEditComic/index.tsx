@@ -11,23 +11,26 @@ import RichTextEditor from "../../atoms/RichTextEditor";
 import { ComicType, comicValidator } from "@validators";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
+import useComicForm from "@/hooks/useComicForm";
 
-/* eslint-disable-next-line */
 export interface FormAddEditComicProps {
   statusData: string[];
   genreData: string[];
   userId: string;
+  isEdit?: boolean;
+  comicId?: string;
+  comicData?: ComicType;
 }
 
 export default function FormAddEditComic({
   statusData,
   genreData,
   userId,
+  isEdit,
+  comicData,
 }: FormAddEditComicProps) {
   const chipProps = useChip(genreData);
-
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { _id: comicId } = (comicData as ComicType) || "";
 
   const {
     register,
@@ -50,41 +53,32 @@ export default function FormAddEditComic({
     resolver: zodResolver(comicValidator),
   });
 
-  const onSubmit = async (data: ComicType) => {
-    setIsLoading(true);
+  const { isLoading, onSubmit } = useComicForm({
+    reset,
+    setError,
+    isEdit,
+    comicId,
+  });
 
-    const validatedData = comicValidator.parse(data);
-
-    await fetch("/api/comic/add", {
-      method: "POST",
-      body: JSON.stringify(validatedData),
-    })
-      .then((response) => {
-        if (response.status === 409) {
-          setError("name", {
-            message: response.statusText,
-          });
-          return;
-        }
-        return response;
-      })
-      .then((response) => {
-        if (response && response.ok) {
-          toast.success("Successfully create new comic.");
-
-          reset();
-        }
-      })
-      .catch((error) => {
-        toast.error(`Failed to create new comic, Error: ${error}`);
-      })
-      .finally(() => {
-        setIsLoading(false);
+  React.useEffect(() => {
+    const fetchComic = () => {
+      reset({
+        uploader: userId,
+        name: comicData?.name,
+        tags: comicData?.tags,
+        status: comicData?.status,
+        cover: comicData?.cover,
+        description: comicData?.description,
+        views: comicData?.views,
+        last_update: new Date(),
       });
-  };
+    };
+    if (comicData && isEdit) fetchComic();
+  }, [comicData, isEdit, userId, reset]);
 
   return (
     <form
+      method={isEdit ? "PATCH" : "POST"}
       onSubmit={handleSubmit(onSubmit)}
       className="flex-1 px-2 flex flex-col"
     >
@@ -95,7 +89,7 @@ export default function FormAddEditComic({
         errors={errors}
         label="Name"
         placeholder="Comic Name"
-        containerClassName="mb-6"
+        containerClassName={`mb-6`}
         showTooltip
         tooltipContent="The Name of Comic you want to display"
         type="text"
@@ -123,8 +117,9 @@ export default function FormAddEditComic({
       <Controller
         name="status"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <StaticSelect
+            defaultValue={value}
             containerClassname="mb-8"
             list={statusData}
             onChange={onChange}
@@ -160,12 +155,13 @@ export default function FormAddEditComic({
       <Controller
         name="description"
         control={control}
-        render={({ field: { name, onChange } }) => (
+        render={({ field: { name, onChange, value } }) => (
           <RichTextEditor
             name={name}
             errors={errors}
             title="Description"
             id="Editor"
+            value={value}
             apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
             onEditorChange={onChange}
             containerClassname="mb-4 flex-1"
@@ -180,7 +176,7 @@ export default function FormAddEditComic({
       />
 
       <Button type="submit" className="ml-auto">
-        {isLoading ? <Spinner className="w-4 h-4" /> : "Post"}
+        {isLoading ? <Spinner className="w-4 h-4" /> : isEdit ? "Edit" : "Add"}
       </Button>
     </form>
   );

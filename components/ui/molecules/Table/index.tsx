@@ -1,5 +1,7 @@
+"use client";
+
 import {
-  Column,
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -8,89 +10,93 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { IconButton } from "@material-tailwind/react";
 import Pagination from "../Pagination";
-import { PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import React from "react";
 
-export interface TableProps<TData> {
+export interface TableProps<TData extends object> {
   data: TData[];
-  columns: Column<TData>[];
+  columns: ColumnDef<TData>[];
+  text?: string;
+  setText?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function Table<TData extends object>({
   data,
   columns,
+  text,
+  setText,
 }: TableProps<TData>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      globalFilter: text,
+    },
+    onGlobalFilterChange: setText,
   });
 
   return (
     <>
-      <div className="w-full mb-4 border border-blue-gray-100 rounded-xl overflow-hidden">
+      <div className="w-full mb-4 border border-blue-gray-100 rounded-xl overflow-y-scroll">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
-            <tr>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                No.
-              </th>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  const hasMeta =
+                    header.getContext().header.column.columnDef.meta;
 
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Name
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Status
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Chapters
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Views
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Comments
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Date Upload
-              </th>
-
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Action
-              </th>
-            </tr>
+                  return (
+                    <th
+                      key={header.id}
+                      className={`sticky top-0 z-10 border-b border-blue-gray-100 bg-blue-gray-50 p-4 ${
+                        hasMeta && hasMeta.thClassName
+                      }`}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
           </thead>
           <tbody>
-            <tr>
-              <td className="p-4">1</td>
-              <td className="p-4">Oshi no Ko</td>
-              <td className="p-4">In Progress</td>
-              <td className="p-4">1</td>
-              <td className="p-4">100</td>
-              <td className="p-4">20</td>
-              <td className="p-4">12/9/2023 05:02 PM</td>
-              <td>
-                <div className="flex items-center gap-x-2">
-                  <IconButton variant="text" className="rounded-full">
-                    <PencilIcon className="w-5 h-5" />
-                  </IconButton>
-                  <IconButton variant="text" className="rounded-full">
-                    <XMarkIcon className="w-5 h-5" />
-                  </IconButton>
-                </div>
-              </td>
-            </tr>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                className="hover:bg-gray-50 cursor-pointer transition-colors"
+                key={row.id}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  const hasMeta = cell.getContext().cell.column.columnDef.meta;
+
+                  return (
+                    <td
+                      key={cell.id}
+                      className={`p-4 ${hasMeta && hasMeta.tdClassName}`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      <Pagination />
+      <Pagination table={table} />
     </>
   );
 }

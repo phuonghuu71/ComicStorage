@@ -6,14 +6,21 @@ import type { InputProps } from "@material-tailwind/react";
 export interface OutlineInputProps extends InputProps {
   text: string;
   className?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export function OutlineInput({ text, type, className }: OutlineInputProps) {
+export function OutlineInput({
+  text,
+  type,
+  className,
+  onChange,
+}: OutlineInputProps) {
   return (
     <div
       className={`relative flex w-full gap-2 md:w-max lg:ml-auto ${className}`}
     >
       <Input
+        onChange={onChange}
         crossOrigin={""}
         label={text}
         type={type}

@@ -1,3 +1,5 @@
+"use client";
+
 import { BreadcrumbProps } from "@/components/ui/molecules/BreadcrumbList";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
@@ -26,3 +28,26 @@ export const BC_DASHBOARD_COMIC_ADD: BreadcrumbProps[] = [
     href: "",
   },
 ];
+
+export const BC_DASHBOARD_COMIC_EDIT = (
+  comicName: string
+): BreadcrumbProps[] => {
+  return [
+    {
+      desc: <HomeIcon className="w-4 h-4" />,
+      href: "/dashboard",
+    },
+    {
+      desc: "Comic Storage",
+      href: "/dashboard/comic",
+    },
+    {
+      desc: "Edit",
+      href: "",
+    },
+    {
+      desc: comicName,
+      href: "",
+    },
+  ];
+};

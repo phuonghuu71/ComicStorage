@@ -9,22 +9,24 @@ import {
 
 /* eslint-disable-next-line */
 export interface StaticSelectProps {
-  list: string[];
+  list: any[];
   containerClassname?: string;
   onChange: (event: any) => void;
+  defaultValue?: string;
 }
 
 export function StaticSelect({
   list,
   containerClassname,
   onChange,
+  defaultValue,
 }: StaticSelectProps) {
   return (
     <div className={`${containerClassname}`}>
       <Select
         variant={"static"}
         label={"Status"}
-        value={list[0]}
+        value={defaultValue || list[0]}
         onChange={onChange}
       >
         {list.map((item, i) => (

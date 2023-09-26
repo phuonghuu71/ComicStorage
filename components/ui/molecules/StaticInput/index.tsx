@@ -27,6 +27,7 @@ export function StaticInput({
   register,
   errors,
   isRequired,
+  disabled,
 }: StaticInputProps) {
   return (
     <div className={containerClassName}>
@@ -34,6 +35,7 @@ export function StaticInput({
         {...register(name, {
           required: isRequired || false,
         })}
+        disabled={disabled}
         crossOrigin={""}
         label={label}
         placeholder={placeholder}

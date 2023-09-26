@@ -2,21 +2,25 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import AddComicForm from "@/components/ui/templates/AddComicForm";
+import EditComicForm from "@/components/ui/templates/EditComicForm";
 
 export const metadata: Metadata = {
-  title: "Add Comic",
-  description: "Adding your Comic to Database",
+  title: "Edit Comic",
+  description: "Edit your existed Comic",
 };
 
-export default async function Page() {
+type comicParams = {
+  comicId: string;
+};
+
+export default async function Page({ params }: { params: comicParams }) {
   const session = await getServerSession(authOptions);
 
   if (!session) notFound();
 
   return (
     <div className={`flex flex-col h-full`}>
-      <AddComicForm userId={session.user.id} />
+      <EditComicForm comicId={params.comicId} userId={session.user.id} />
     </div>
   );
 }

@@ -20,7 +20,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col">
       <BreadcrumbList data={BC_DASHBOARD_COMIC} />
-      <Container className="flex-1 h-full w-full flex flex-col items-end">
+      <Container className="flex-1 w-full overflow-y-scroll flex flex-col pt-0">
         <ComicStorage userId={session.user.id} />
       </Container>
     </div>

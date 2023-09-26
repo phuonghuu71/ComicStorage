@@ -1,8 +1,8 @@
 import { Comic, connectToDB } from "@/util";
 import type { NextApiRequest } from "next";
 
-type userParams = {
-  uploaderId: string;
+type comicParams = {
+  comicId: string;
 };
 
 export const GET = async (
@@ -10,23 +10,19 @@ export const GET = async (
   {
     params,
   }: {
-    params: userParams;
+    params: comicParams;
   }
 ) => {
   try {
-    const { uploaderId } = params;
+    const { comicId } = params;
 
     await connectToDB({
       mongoDBUri: process.env.MONGODB_URI,
     });
 
-    const res = await Comic.find({
-      uploader: {
-        _id: uploaderId,
-      },
-    })
-      .select(["-cover"])
-      .populate("uploader");
+    const res = await Comic.findOne({
+      _id: comicId,
+    });
 
     const comicData = JSON.stringify(res) as string;
 

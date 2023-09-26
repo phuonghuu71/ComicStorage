@@ -6,9 +6,10 @@ import React from "react";
 export interface ContainerProps {
   children: React.ReactNode;
   className?: string;
+  maxHeight?: boolean;
 }
 
-export function Container({ children, className }: ContainerProps) {
+export function Container({ children, className, maxHeight }: ContainerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [height, setHeight] = React.useState<string>("");
 
@@ -21,7 +22,7 @@ export function Container({ children, className }: ContainerProps) {
     <div
       ref={containerRef}
       style={{
-        maxHeight: height,
+        maxHeight: maxHeight ? height : undefined,
       }}
       className={`p-4 rounded-2xl bg-white ${className}`}
     >
