@@ -8,6 +8,7 @@ import FormAddEditComic from "../../organisms/FormAddEditComic";
 import { BC_DASHBOARD_COMIC_EDIT } from "@/assets/constants/breadcrumbs";
 import useFetchSingle from "@/hooks/useFetchSingle";
 import { ComicType } from "@/util/validations";
+import { Spinner } from "@material-tailwind/react";
 
 export interface EditComicFormProps {
   comicId: string;
@@ -21,7 +22,11 @@ export default function EditComicForm({ comicId, userId }: EditComicFormProps) {
 
   return (
     <>
-      <BreadcrumbList data={BC_DASHBOARD_COMIC_EDIT(data?.name || "")} />
+      <BreadcrumbList
+        data={BC_DASHBOARD_COMIC_EDIT(
+          data?.name || <Spinner className="w-3 h-3" />
+        )}
+      />
 
       <Container
         maxHeight

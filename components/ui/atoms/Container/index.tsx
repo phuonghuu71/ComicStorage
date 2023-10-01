@@ -15,7 +15,7 @@ export function Container({ children, className, maxHeight }: ContainerProps) {
 
   React.useEffect(() => {
     if (containerRef.current)
-      setHeight(`${containerRef.current?.clientHeight}px`);
+      setHeight(`${containerRef.current.clientHeight}px`);
   }, []);
 
   return (

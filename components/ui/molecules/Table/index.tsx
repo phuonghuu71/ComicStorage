@@ -2,6 +2,8 @@
 
 import {
   ColumnDef,
+  OnChangeFn,
+  RowSelectionState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -18,6 +20,8 @@ export interface TableProps<TData extends object> {
   columns: ColumnDef<TData>[];
   text?: string;
   setText?: React.Dispatch<React.SetStateAction<string>>;
+  rowSelect?: any;
+  setRowSelect?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function Table<TData extends object>({
@@ -25,6 +29,8 @@ export default function Table<TData extends object>({
   columns,
   text,
   setText,
+  rowSelect,
+  setRowSelect,
 }: TableProps<TData>) {
   const table = useReactTable({
     data,
@@ -74,6 +80,9 @@ export default function Table<TData extends object>({
               <tr
                 className="hover:bg-gray-50 cursor-pointer transition-colors"
                 key={row.id}
+                onClick={() => {
+                  if (setRowSelect) setRowSelect(row.original);
+                }}
               >
                 {row.getVisibleCells().map((cell) => {
                   const hasMeta = cell.getContext().cell.column.columnDef.meta;

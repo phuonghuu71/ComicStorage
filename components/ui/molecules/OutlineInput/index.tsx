@@ -16,9 +16,7 @@ export function OutlineInput({
   onChange,
 }: OutlineInputProps) {
   return (
-    <div
-      className={`relative flex w-full gap-2 md:w-max lg:ml-auto ${className}`}
-    >
+    <div className={`relative flex w-full gap-2 md:w-max ${className}`}>
       <Input
         onChange={onChange}
         crossOrigin={""}

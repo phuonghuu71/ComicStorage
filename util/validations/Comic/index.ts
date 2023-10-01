@@ -2,7 +2,12 @@ import { z } from "zod";
 
 export const comicValidator = z.object({
   uploader: z.string(),
-  chapters: z.object({}).array().optional(),
+  chapters: z
+    .object({
+      name: z.string(),
+    })
+    .array()
+    .optional(),
   name: z.string().nonempty("The name is required."),
   description: z.string().nonempty("Please enter description."),
   status: z.string().nonempty("Please choose status."),

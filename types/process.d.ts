@@ -7,5 +7,9 @@ declare namespace NodeJS {
     NEXTAUTH_SECRET: string;
     MONGODB_URI: string;
     NEXT_PUBLIC_TINY_API_KEY: string;
+    CLOUDINARY_URL_IMG: string;
+    CLOUDINARY_API_KEY: string;
+    CLOUDINARY_API_SECRET: string;
+    CLOUDINARY_CLOUD_NAME: string;
   }
 }

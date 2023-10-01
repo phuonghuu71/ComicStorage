@@ -35,6 +35,11 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
   });
 
   const [filter, setFilter, onChangeFilterHandler] = useInput();
+  const [comic, setComic] = React.useState<ComicType>();
+
+  React.useEffect(() => {
+    if (comic) router.push(`/dashboard/comic/${comic._id}/chapters`);
+  }, [comic, router]);
 
   const editHandler = React.useCallback(
     (value: unknown) => {
@@ -69,7 +74,17 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
       },
       {
         header: "Name",
-        cell: (row) => row.renderValue(),
+        cell: (row) => {
+          return (
+            <p
+              onClick={() => {
+                setComic(row.row.original);
+              }}
+            >
+              {row.getValue() as React.ReactNode}
+            </p>
+          );
+        },
         accessorKey: "name",
       },
       {
@@ -126,9 +141,9 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
             <IconButton
               onClick={() => deleteHandler(row.getValue())}
               variant="text"
-              className="rounded-full"
+              className="rounded-full z-10"
             >
-              <XMarkIcon className="w-5 h-5" />
+              <XMarkIcon className="w-5" />
             </IconButton>
           </>
         ),

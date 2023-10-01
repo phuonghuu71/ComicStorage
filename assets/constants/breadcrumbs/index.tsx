@@ -30,7 +30,7 @@ export const BC_DASHBOARD_COMIC_ADD: BreadcrumbProps[] = [
 ];
 
 export const BC_DASHBOARD_COMIC_EDIT = (
-  comicName: string
+  comicName: string | React.ReactNode
 ): BreadcrumbProps[] => {
   return [
     {
@@ -51,3 +51,50 @@ export const BC_DASHBOARD_COMIC_EDIT = (
     },
   ];
 };
+
+export const BC_DASHBOARD_CHAPTERS = (
+  comicName: string | React.ReactNode
+): BreadcrumbProps[] => [
+  {
+    desc: <HomeIcon className="w-4 h-4" />,
+    href: "/dashboard",
+  },
+  {
+    desc: "Comic Storage",
+    href: "/dashboard/comic",
+  },
+  {
+    desc: comicName,
+    href: "",
+  },
+  {
+    desc: "Chapters",
+    href: "",
+  },
+];
+
+export const BC_DASHBOARD_CHAPTERS_ADD = (
+  comicName: string | React.ReactNode,
+  comicId?: string
+): BreadcrumbProps[] => [
+  {
+    desc: <HomeIcon className="w-4 h-4" />,
+    href: "/dashboard",
+  },
+  {
+    desc: "Comic Storage",
+    href: "/dashboard/comic",
+  },
+  {
+    desc: comicName,
+    href: `/dashboard/comic/${comicId}/chapters`,
+  },
+  {
+    desc: "Chapters",
+    href: "",
+  },
+  {
+    desc: "Add",
+    href: "",
+  },
+];
