@@ -7,7 +7,7 @@ import SidebarOptions from "../../molecules/SidebarOptions";
 import { SidebarItemProps } from "../../atoms/SidebarItem";
 import Profile from "../Profile";
 import { PROFILE_MENU_ITEMS } from "@/assets/constants/navigation";
-
+import DynamicIcon from "../../atoms/DynamicIcon";
 export default function Layout({
   children,
   sidebarItems,
@@ -24,13 +24,23 @@ export default function Layout({
           toggle ? "w-full" : "w-28"
         } transition-all border-r-2 border-blue-gray-50 bg-white`}
       >
-        <Typography
-          as={"a"}
-          href="/"
-          className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-xl"
-        >
-          Comics
-        </Typography>
+        <div className="px-3 flex items-center gap-x-2 mb-4">
+          <div className="rounded-full border-2 border-purple-500 p-2 w-fit">
+            <DynamicIcon
+              icon="PaintBrushIcon"
+              className="w-4 h-4 text-purple-500"
+            />
+          </div>
+          {toggle && (
+            <Typography
+              as={"a"}
+              href="/"
+              className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-xl"
+            >
+              Comics
+            </Typography>
+          )}
+        </div>
 
         <SidebarOptions toggle={toggle} items={sidebarItems} />
       </div>

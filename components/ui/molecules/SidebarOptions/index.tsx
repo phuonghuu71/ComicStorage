@@ -11,26 +11,10 @@ export interface SidebarOptionsProps {
 }
 
 export function SidebarOptions({ items, toggle }: SidebarOptionsProps) {
-  const [activeItem, setActiveItem] = React.useState<SidebarItemProps[]>(items);
-
-  const activeHandler = (i: number) => {
-    setActiveItem((prev) =>
-      prev.map((item, k) => {
-        if (k === i) return { ...item, active: true };
-        return { ...item, active: false };
-      })
-    );
-  };
-
   return (
     <List>
-      {activeItem.map((item, i) => (
-        <SidebarItem
-          onClick={() => activeHandler(i)}
-          key={i}
-          {...item}
-          toggle={toggle}
-        />
+      {items.map((item, i) => (
+        <SidebarItem key={i} toggle={toggle} {...item} />
       ))}
     </List>
   );

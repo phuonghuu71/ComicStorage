@@ -18,23 +18,25 @@ export const authOptions: NextAuthOptions = {
       try {
         const { name, email, image } = user;
 
-        const props: MongoDbProps = {
-          mongoDBUri: process.env.MONGODB_URI,
-        };
-
-        await connectToDB(props).catch(console.dir);
-
         // . Check if user already exists
-        const userExist = await User.findOne({
-          email: email,
-        });
+        if (email) {
+          const props: MongoDbProps = {
+            mongoDBUri: process.env.MONGODB_URI,
+          };
 
-        if (!userExist) {
-          await User.create({
+          await connectToDB(props).catch(console.dir);
+
+          const userExist = await User.findOne({
             email: email,
-            name: name,
-            image: image,
           });
+
+          if (!userExist) {
+            await User.create({
+              email: email,
+              name: name,
+              image: image,
+            });
+          }
         }
 
         return true;
@@ -75,7 +77,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     redirect() {
-      return "/dashboard";
+      return "/dashboard/home";
     },
   },
 };

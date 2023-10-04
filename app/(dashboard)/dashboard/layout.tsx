@@ -5,20 +5,17 @@ const SIDEBAR_ITEMS: SidebarItemProps[] = [
   {
     title: "Home",
     icon: "HomeIcon",
-    href: "/dashboard",
-    active: true,
+    href: "/dashboard/home",
   },
   {
     title: "Bookmark",
     icon: "BookmarkIcon",
     href: "/dashboard/bookmark",
-    active: false,
   },
   {
     title: "Comic Storage",
     href: "/dashboard/comic",
     icon: "BoltIcon",
-    active: false,
   },
 ];
 

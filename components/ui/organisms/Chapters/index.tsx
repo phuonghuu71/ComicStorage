@@ -10,7 +10,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Container from "../../atoms/Container";
 import Table from "../../molecules/Table";
 import OutlineInput from "../../molecules/OutlineInput";
-import { PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Title from "../../atoms/Title";
 import { useRouter } from "next/navigation";
 import { useInput } from "@/hooks";

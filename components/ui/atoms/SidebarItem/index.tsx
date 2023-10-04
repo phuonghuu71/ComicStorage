@@ -1,32 +1,31 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { ListItem, ListItemPrefix } from "@material-tailwind/react";
 import DynamicIcon, { IconName } from "../DynamicIcon";
-import { MouseEventHandler } from "react";
 import Link from "next/link";
+import React from "react";
 
 /* eslint-disable-next-line */
 export interface SidebarItemProps {
-  toggle?: boolean;
   title: string;
   icon: IconName;
   href: string;
-  active?: boolean;
-  onClick?: MouseEventHandler<HTMLDivElement>;
+  toggle?: boolean;
 }
 
-export function SidebarItem({
-  toggle,
-  title,
-  icon,
-  active,
-  href,
-  onClick,
-}: SidebarItemProps) {
+export function SidebarItem({ toggle, title, icon, href }: SidebarItemProps) {
+  const pathname = usePathname();
+  const [active, setActive] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (pathname.startsWith(href)) setActive(true);
+    else setActive(false);
+  }, [pathname, href]);
+
   return (
     <Link href={href}>
       <ListItem
-        onClick={onClick}
         className={`${!toggle && "w-fit"} mb-1 last:mb-0 ${
           active && "!bg-purple-400 !text-white"
         }`}
