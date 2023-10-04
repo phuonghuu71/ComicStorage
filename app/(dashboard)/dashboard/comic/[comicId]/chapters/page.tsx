@@ -13,11 +13,9 @@ export default async function Page({ params }: { params: chapterParams }) {
 
   if (!session) notFound();
 
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-
   return (
-    <div className="flex flex-col h-full">
-      <Chapters cloudName={cloudName} comicId={comicId} />
+    <div className="flex flex-col">
+      <Chapters comicId={comicId} />
     </div>
   );
 }

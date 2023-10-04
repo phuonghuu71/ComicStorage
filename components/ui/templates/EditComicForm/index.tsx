@@ -16,7 +16,7 @@ export interface EditComicFormProps {
 }
 
 export default function EditComicForm({ comicId, userId }: EditComicFormProps) {
-  const data = useFetchSingle<ComicType>({
+  const { data } = useFetchSingle<ComicType>({
     url: `/api/comic/get-by-comic-id/${comicId}`,
   });
 

@@ -2,8 +2,6 @@
 
 import {
   ColumnDef,
-  OnChangeFn,
-  RowSelectionState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -12,8 +10,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import Pagination from "../Pagination";
 import React from "react";
+import { Spinner } from "@material-tailwind/react";
 
 export interface TableProps<TData extends object> {
   data: TData[];
@@ -32,9 +30,25 @@ export default function Table<TData extends object>({
   rowSelect,
   setRowSelect,
 }: TableProps<TData>) {
+  const tableData = React.useMemo<TData[]>(
+    () => (!data ? Array(30).fill({}) : data),
+    [data]
+  );
+
+  const tableColumns = React.useMemo(
+    () =>
+      data
+        ? columns.map((column) => ({
+            ...column,
+            Cell: <Spinner />,
+          }))
+        : columns,
+    [data, columns]
+  );
+
   const table = useReactTable({
-    data,
-    columns,
+    data: tableData,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -48,7 +62,7 @@ export default function Table<TData extends object>({
   return (
     <>
       <div className="w-full mb-4 border border-blue-gray-100 rounded-xl overflow-y-scroll">
-        <table className="w-full min-w-max table-auto text-left">
+        <table className="w-full table-auto text-left">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -76,9 +90,11 @@ export default function Table<TData extends object>({
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
+            {table.getRowModel().rows.map((row, i) => (
               <tr
-                className="hover:bg-gray-50 cursor-pointer transition-colors"
+                className={`hover:bg-purple-50 cursor-pointer transition-colors ${
+                  i % 2 !== 0 && "bg-gray-50"
+                }`}
                 key={row.id}
                 onClick={() => {
                   if (setRowSelect) setRowSelect(row.original);
@@ -104,8 +120,6 @@ export default function Table<TData extends object>({
           </tbody>
         </table>
       </div>
-
-      <Pagination table={table} />
     </>
   );
 }

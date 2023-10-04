@@ -3,7 +3,6 @@ import { FetchProps } from "..";
 
 export default function useFetch<Data>({ url }: FetchProps) {
   const [data, setData] = React.useState<Data[]>([]);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -14,8 +13,6 @@ export default function useFetch<Data>({ url }: FetchProps) {
         setData(data);
       } catch (error) {
         console.log(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -25,7 +22,5 @@ export default function useFetch<Data>({ url }: FetchProps) {
   return {
     data,
     setData,
-    isLoading,
-    setIsLoading,
   };
 }

@@ -1,10 +1,10 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models } from "mongoose";
 
 const ChapterSchema = new Schema({
-  name: {
+  chapter_name: {
     type: String,
-    unique: [true, 'The Chapter name exists!'],
-    require: [true, 'Chapter name is required!'],
+    unique: [true, "The Chapter name exists!"],
+    require: [true, "Chapter name is required!"],
   },
   pages: [
     {
@@ -18,6 +18,6 @@ const ChapterSchema = new Schema({
   ],
 });
 
-const Chapter = models['Chapter'] || model('Chapter', ChapterSchema);
+const Chapter = models["Chapter"] || model("Chapter", ChapterSchema);
 
 export { Chapter };

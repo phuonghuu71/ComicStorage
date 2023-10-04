@@ -7,23 +7,24 @@ import { Table } from "@tanstack/react-table";
 import usePageNumber from "@/hooks/usePageNumber";
 
 /* eslint-disable-next-line */
-export interface PaginationProps<TData> {
-  table: Table<TData>;
+export interface PaginationProps {
+  pageCount: number;
+  setCurrPage: React.Dispatch<React.SetStateAction<number>>;
+  limit: number;
 }
 
-export function Pagination<TData extends object>({
-  table,
-}: PaginationProps<TData>) {
+export function Pagination({ pageCount, setCurrPage, limit }: PaginationProps) {
   const [active, setActive] = React.useState<number>(1);
   const fetchPages = usePageNumber({
-    pageSize: table.getPageCount() < 5 ? table.getPageCount() : 5,
-    pageCount: table.getPageCount(),
+    pageSize: pageCount < limit ? pageCount : limit,
+    pageCount: pageCount,
     currentPage: active - 1,
   });
 
   React.useEffect(() => {
-    table.setPageSize(5);
-  }, [table]);
+    if (active) setCurrPage(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
   const getItemProps = (index: number) =>
     ({
@@ -33,29 +34,21 @@ export function Pagination<TData extends object>({
       className: "rounded-full",
     } as any);
 
-  const goToPage = React.useCallback(
-    (i: number) => {
-      table.setPageIndex(i);
-      setActive(i + 1);
-    },
-    [table]
-  );
+  const goToPage = React.useCallback((i: number) => {
+    setActive(i + 1);
+  }, []);
 
   const next = React.useCallback(() => {
-    if (!table.getCanNextPage()) return;
+    if (active === pageCount) return;
 
     setActive((prev) => prev + 1);
-
-    table.nextPage();
-  }, [table]);
+  }, [pageCount, active]);
 
   const prev = React.useCallback(() => {
-    if (!table.getCanPreviousPage()) return;
+    if (active === 1) return;
 
     setActive((prev) => prev - 1);
-
-    table.previousPage();
-  }, [table]);
+  }, [active]);
 
   return (
     <div className="flex items-center gap-4 ml-auto">
@@ -63,13 +56,17 @@ export function Pagination<TData extends object>({
         variant="text"
         className="flex items-center gap-2 rounded-full"
         onClick={prev}
-        disabled={!table.getCanPreviousPage()}
+        disabled={active === 1}
       >
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
       </Button>
       <div className="flex items-center gap-2">
         {fetchPages.map((page, i) => (
-          <IconButton key={i} {...getItemProps(page.pageIndex + 1)}>
+          <IconButton
+            disabled={page.pageIndex === active - 1}
+            key={i}
+            {...getItemProps(page.pageIndex + 1)}
+          >
             {page.pageIndex + 1}
           </IconButton>
         ))}
@@ -78,7 +75,7 @@ export function Pagination<TData extends object>({
         variant="text"
         className="flex items-center gap-2 rounded-full"
         onClick={next}
-        disabled={!table.getCanNextPage()}
+        disabled={active === pageCount}
       >
         Next
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

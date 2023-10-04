@@ -98,3 +98,29 @@ export const BC_DASHBOARD_CHAPTERS_ADD = (
     href: "",
   },
 ];
+
+export const BC_DASHBOARD_CHAPTERS_EDIT = (
+  comicName: string | React.ReactNode,
+  comicId?: string
+): BreadcrumbProps[] => [
+  {
+    desc: <HomeIcon className="w-4 h-4" />,
+    href: "/dashboard",
+  },
+  {
+    desc: "Comic Storage",
+    href: "/dashboard/comic",
+  },
+  {
+    desc: comicName,
+    href: `/dashboard/comic/${comicId}/chapters`,
+  },
+  {
+    desc: "Chapters",
+    href: "",
+  },
+  {
+    desc: "Edit",
+    href: "",
+  },
+];

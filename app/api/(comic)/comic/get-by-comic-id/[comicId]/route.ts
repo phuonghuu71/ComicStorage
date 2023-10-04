@@ -22,7 +22,7 @@ export const GET = async (
 
     const res = await Comic.findOne({
       _id: comicId,
-    });
+    }).select(["-chapters"]);
 
     const comicData = JSON.stringify(res) as string;
 

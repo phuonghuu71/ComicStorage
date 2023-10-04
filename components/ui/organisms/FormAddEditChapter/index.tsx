@@ -3,20 +3,23 @@
 import React from "react";
 import Container from "../../atoms/Container";
 import Title from "../../atoms/Title";
-import MultipleFilesUpload from "../../molecules/MultipleFilesUpload";
-import OutlineInput from "../../molecules/OutlineInput";
-import { Button, Typography } from "@material-tailwind/react";
-import ChapterItem, { urlType } from "../../molecules/ChapterItem";
-import { UseDragDropProps, useInput } from "@/hooks";
+import { Button, Spinner } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
 import { ChapterType, chapterValidator } from "@/util/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import StaticInput from "../../molecules/StaticInput";
 import AddPages from "../AddPages";
+import toast from "react-hot-toast";
+import useDragDrop from "@/hooks/useDragDrop";
+import useFetchSingle from "@/hooks/useFetchSingle";
+import { useRouter } from "next/navigation";
 
-export interface FormAddEditChapterProps extends UseDragDropProps {
+export interface FormAddEditChapterProps {
   cloudName: string;
   comicName?: string;
+  comicId?: string;
+  chapterId?: string;
+  isEdit?: boolean;
 }
 
 export interface PageProps {
@@ -27,23 +30,102 @@ export interface PageProps {
 export default function FormAddEditChapter({
   cloudName,
   comicName,
-  ...widgetsProps
+  comicId,
+  chapterId,
+  isEdit,
 }: FormAddEditChapterProps) {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
+    setError,
+    reset,
+    clearErrors,
   } = useForm<ChapterType>({
     defaultValues: {
-      name: "",
+      chapter_name: "",
       pages: [],
     },
     resolver: zodResolver(chapterValidator),
   });
 
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [chapterData, setChapterData] = React.useState<ChapterType>();
+
+  React.useEffect(() => {
+    async function fetchChapter() {
+      const fetchChapterData = await fetch(
+        `/api/chapter/get-chapter-by-id/${chapterId}`
+      );
+
+      const parsedChapterData = await fetchChapterData.json();
+      setChapterData(parsedChapterData as ChapterType);
+    }
+
+    if (isEdit && chapterId) fetchChapter();
+  }, [isEdit, chapterId]);
+
+  const widgetsProps = useDragDrop({
+    chapterData: chapterData,
+  });
+
+  React.useEffect(() => {
+    const fetchChapter = () => {
+      if (chapterData) {
+        reset({
+          chapter_name: chapterData.chapter_name,
+          pages: [...chapterData.pages],
+        });
+      }
+    };
+    if (chapterData && isEdit) fetchChapter();
+  }, [chapterData, isEdit, reset]);
+
+  const router = useRouter();
+
   const onSubmit = async (data: ChapterType) => {
-    console.log(data);
+    setIsLoading(true);
+
+    const validatedData = chapterValidator.parse(data);
+
+    await fetch(
+      isEdit
+        ? `/api/chapter/${comicId}/edit/${chapterId}`
+        : `/api/chapter/${comicId}/add`,
+      {
+        method: isEdit ? "PATCH" : "POST",
+        body: JSON.stringify(validatedData),
+      }
+    )
+      .then((response) => {
+        if (response.status === 409) {
+          setError("chapter_name", {
+            message: response.statusText,
+          });
+          return;
+        }
+        return response;
+      })
+      .then((response) => {
+        if (response && response.ok) {
+          if (isEdit) {
+            toast.success("Successfully edit chapter.");
+            router.push(`/dashboard/comic/${comicId}/chapters`);
+          } else {
+            toast.success("Successfully create new chapter.");
+            widgetsProps.setWidgets([]);
+            reset();
+          }
+        }
+      })
+      .catch((error) => {
+        toast.error(`Failed to create/update new chapter, Error: ${error}`);
+      })
+      .finally(() => {
+        clearErrors();
+        setIsLoading(true);
+      });
   };
 
   return (
@@ -52,21 +134,22 @@ export default function FormAddEditChapter({
       className="flex-1 w-full h-full overflow-y-scroll flex flex-col pt-0"
     >
       <Title
-        title="Add Chapter"
-        description={`Please add a chapter for ${
+        title={isEdit ? "Edit Chapter" : "Add Chapter"}
+        description={`Please ${isEdit ? "edit" : "add"} a chapter for ${
           comicName ? `${comicName}` : "..."
         }`}
         containerClass="pt-4 mb-4 sticky top-0 bg-white z-10"
       />
 
       <form
-        method="POST"
+        method={isEdit ? "PATCH" : "POST"}
         onSubmit={handleSubmit(onSubmit)}
-        className="h-full flex flex-col"
+        className="h-full flex flex-col px-2"
       >
         <StaticInput
-          name="name"
+          name="chapter_name"
           isRequired
+          disabled={isLoading}
           register={register}
           errors={errors}
           label="Chapter name"
@@ -80,7 +163,7 @@ export default function FormAddEditChapter({
         <Controller
           name="pages"
           control={control}
-          render={({ field: { onChange, name } }) => (
+          render={({ field: { onChange, name, value } }) => (
             <AddPages
               name={name}
               onChange={onChange}
@@ -90,9 +173,14 @@ export default function FormAddEditChapter({
             />
           )}
         />
-
         <Button type="submit" className="w-fit self-end">
-          Add
+          {isLoading ? (
+            <Spinner className="w-4 h-4" />
+          ) : isEdit ? (
+            "Edit"
+          ) : (
+            "Add"
+          )}
         </Button>
       </form>
     </Container>

@@ -1,3 +1,4 @@
+import PaginatingData from "@/helper/PaginatingData";
 import { Comic, connectToDB } from "@/util";
 import type { NextApiRequest } from "next";
 
@@ -16,6 +17,8 @@ export const GET = async (
   try {
     const { uploaderId } = params;
 
+    const { _limit, _startIndex } = PaginatingData(req);
+
     await connectToDB({
       mongoDBUri: process.env.MONGODB_URI,
     });
@@ -26,9 +29,24 @@ export const GET = async (
       },
     })
       .select(["-cover"])
-      .populate("uploader");
+      .populate("uploader")
+      .limit(_limit)
+      .skip(_startIndex);
 
-    const comicData = JSON.stringify(res) as string;
+    const countComics = await Comic.find({
+      uploader: {
+        _id: uploaderId,
+      },
+    })
+      .select(["-cover", "-chapters"])
+      .countDocuments();
+
+    const totalComic = Math.ceil(countComics / _limit);
+
+    const comicData = JSON.stringify({
+      comics: [...res],
+      numberOfPages: totalComic,
+    }) as string;
 
     return new Response(comicData, { status: 200 });
   } catch (error) {

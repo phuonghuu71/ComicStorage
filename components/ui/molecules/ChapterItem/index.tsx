@@ -2,18 +2,9 @@
 
 import React from "react";
 
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
+import { IconButton, Typography } from "@material-tailwind/react";
 import { UploadableFile } from "../MultipleFilesUpload";
 import { EyeIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import ImageModal from "../ImageModal";
 
 export interface ChapterItemProps {
@@ -41,9 +32,7 @@ export default function ChapterItem({
   onDragOverHandler,
   onDeleteHandler,
 }: ChapterItemProps) {
-  const getUrl = (
-    chapter.url ? JSON.parse(JSON.stringify(chapter.url)) : ""
-  ) as urlType;
+  const getUrl = chapter.url ? JSON.parse(JSON.stringify(chapter.url)) : "";
 
   const [open, setOpen] = React.useState(false);
 
@@ -60,18 +49,21 @@ export default function ChapterItem({
     >
       <div className="mr-auto">
         <Typography as={"h6"}>{`Page ${chapterIdx + 1}`}</Typography>
-        <Typography
-          as={"p"}
-          color="gray"
-        >{`Name: ${getUrl.original_filename}`}</Typography>
+        <Typography as={"p"} color="gray" className="line-clamp-1">{`Name: ${
+          getUrl.original_filename || getUrl.secure_url.split("/").pop()
+        }`}</Typography>
       </div>
-      <IconButton onClick={handleOpen} variant="text">
+      <IconButton onClick={handleOpen} variant="text" className="shrink-0">
         <EyeIcon className="w-5 h-5" />
       </IconButton>
 
       <ImageModal open={open} handleOpen={handleOpen} url={getUrl.secure_url} />
 
-      <IconButton variant="text" onClick={() => onDeleteHandler(chapterIdx)}>
+      <IconButton
+        variant="text"
+        className="shrink-0"
+        onClick={() => onDeleteHandler(chapterIdx)}
+      >
         <XMarkIcon className="w-5 h-5" />
       </IconButton>
     </div>

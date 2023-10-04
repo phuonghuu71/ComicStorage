@@ -1,12 +1,13 @@
+"use client";
+
 import { Typography } from "@material-tailwind/react";
 import HelperText from "../../atoms/HelperText";
 import MultipleFilesUpload from "../../molecules/MultipleFilesUpload";
 import Container from "../../atoms/Container";
-import { UseDragDropProps } from "@/hooks";
 import ChapterItem, { urlType } from "../../molecules/ChapterItem";
 import { FieldErrors } from "react-hook-form";
 import React from "react";
-import { PageProps } from "../FormAddEditChapter";
+import { UseDragDropProps } from "@/hooks/useDragDrop";
 
 export interface AddPages extends UseDragDropProps {
   cloudName: string;
@@ -19,8 +20,8 @@ export default function AddPages({
   name,
   cloudName,
   errors,
-  widgets,
   onChange,
+  widgets,
   onDropHandler,
   onDragOverHandler,
   onDragStartHandler,
@@ -28,8 +29,6 @@ export default function AddPages({
   onDragEndHandler,
   onDeleteHandler,
 }: AddPages) {
-  const [pages, setPages] = React.useState<PageProps[]>([]);
-
   React.useEffect(() => {
     const pages = [...widgets];
 
@@ -67,20 +66,28 @@ export default function AddPages({
             maxHeight
             className="flex-1 border-blue-gray-100 rounded-md border border-dashed overflow-y-scroll"
           >
-            {widgets.map((widget, i) => {
-              return (
-                <ChapterItem
-                  chapter={widget}
-                  onDeleteHandler={() => onDeleteHandler(i)}
-                  onDragEndHandler={onDragEndHandler}
-                  onDragEnterHandler={onDragEnterHandler}
-                  onDragStartHandler={onDragStartHandler}
-                  onDragOverHandler={onDragOverHandler}
-                  chapterIdx={i}
-                  key={i}
-                />
-              );
-            })}
+            {widgets.length !== 0 ? (
+              widgets.map((widget, i) => {
+                return (
+                  <ChapterItem
+                    chapter={widget}
+                    onDeleteHandler={() => onDeleteHandler(i)}
+                    onDragEndHandler={onDragEndHandler}
+                    onDragEnterHandler={onDragEnterHandler}
+                    onDragStartHandler={onDragStartHandler}
+                    onDragOverHandler={onDragOverHandler}
+                    chapterIdx={i}
+                    key={i}
+                  />
+                );
+              })
+            ) : (
+              <>
+                <div className="w-full h-10 bg-blue-gray-100 animate-pulse rounded mb-2 last:mb-0" />
+                <div className="w-full h-10 bg-blue-gray-100 animate-pulse rounded mb-2 last:mb-0" />
+                <div className="w-full h-10 bg-blue-gray-100 animate-pulse rounded mb-2 last:mb-0" />
+              </>
+            )}
           </Container>
         </div>
       </div>

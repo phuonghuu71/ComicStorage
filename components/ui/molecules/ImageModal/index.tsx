@@ -12,13 +12,17 @@ import Image from "next/image";
 export interface ImageModalProps {
   open: boolean;
   handleOpen: React.Dispatch<React.SetStateAction<any>>;
-  url: string;
+  url: any;
 }
 
 export default function ImageModal({ open, handleOpen, url }: ImageModalProps) {
   return (
     <Dialog open={open} handler={handleOpen}>
-      <DialogHeader>Its a simple dialog.</DialogHeader>
+      <DialogHeader>
+        <span className="line-clamp-1">
+          {url.original_filename || url.split("/").pop()}
+        </span>
+      </DialogHeader>
       <DialogBody
         divider
         className="flex justify-center items-center max-h-[500px] overflow-y-scroll p-0"
@@ -30,16 +34,8 @@ export default function ImageModal({ open, handleOpen, url }: ImageModalProps) {
         />
       </DialogBody>
       <DialogFooter>
-        <Button
-          variant="text"
-          color="red"
-          onClick={handleOpen}
-          className="mr-1"
-        >
-          <span>Cancel</span>
-        </Button>
-        <Button variant="gradient" color="green" onClick={handleOpen}>
-          <span>Confirm</span>
+        <Button variant="gradient" color="purple" onClick={handleOpen}>
+          <span>Close</span>
         </Button>
       </DialogFooter>
     </Dialog>

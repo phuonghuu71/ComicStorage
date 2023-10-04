@@ -1,5 +1,6 @@
 import { urlType } from "@/components/ui/molecules/ChapterItem";
 import { UploadableFile } from "@/components/ui/molecules/MultipleFilesUpload";
+import { ChapterType } from "@/util/validations";
 import React from "react";
 
 export interface UseDragDropProps {
@@ -12,8 +13,12 @@ export interface UseDragDropProps {
   onDeleteHandler: (idx: number) => void;
 }
 
-export default function useDragDrop() {
-  const [widgets, setWidgets] = React.useState<UploadableFile[]>([]);
+export default function useDragDrop({
+  chapterData,
+}: {
+  chapterData?: ChapterType;
+}) {
+  const [widgets, setWidgets] = React.useState<any[]>([]);
   const dragItem = React.useRef<number>(0);
   const dragOverItem = React.useRef<number>(0);
 
@@ -65,8 +70,23 @@ export default function useDragDrop() {
     setWidgets((prev) => prev.filter((item, _idx) => _idx !== idx));
   }
 
+  React.useEffect(() => {
+    if (chapterData) {
+      const pages = chapterData.pages.map((page) => {
+        return {
+          url: {
+            secure_url: page.page_img_url,
+          },
+        };
+      });
+
+      setWidgets([...pages]);
+    }
+  }, [chapterData]);
+
   return {
     widgets,
+    setWidgets,
     onDropHandler,
     onDragOverHandler,
     onDragStartHandler,

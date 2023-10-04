@@ -6,8 +6,16 @@ export const pagesValidator = z.object({
 });
 
 export const chapterValidator = z.object({
-  name: z.string().nonempty("The chapter needs a name."),
+  _id: z.string().optional(),
+  chapter_name: z.string().nonempty("The chapter needs a name."),
   pages: z.array(pagesValidator).nonempty("At least add some pages."),
 });
 
 export type ChapterType = z.infer<typeof chapterValidator>;
+
+export const totalChapterValidator = z.object({
+  chapters: z.array(chapterValidator),
+  numberOfPages: z.number(),
+});
+
+export type TotalChapterType = z.infer<typeof totalChapterValidator>;

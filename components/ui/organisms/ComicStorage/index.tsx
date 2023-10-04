@@ -3,13 +3,12 @@
 import React from "react";
 
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { Button, Spinner } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import Title from "../../atoms/Title";
 import OutlineInput from "../../molecules/OutlineInput";
-import { ComicType } from "@/util/validations";
+import { ComicType, TotalComicType } from "@/util/validations";
 import Table from "../../molecules/Table";
 import { ColumnDef } from "@tanstack/react-table";
-import useFetch from "@/hooks/useFetch";
 
 import { DateTime } from "luxon";
 import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -17,6 +16,10 @@ import { IconButton } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useInput } from "@/hooks";
+import Pagination from "../../molecules/Pagination";
+import SkeletonTable from "../../atoms/SkeletonTable";
+import useFetchSingle from "@/hooks/useFetchSingle";
+import DeleteModal from "../../atoms/DeleteModal";
 
 export interface ComicStorageProps {
   userId: string;
@@ -24,22 +27,19 @@ export interface ComicStorageProps {
 
 export default function ComicStorage({ userId }: ComicStorageProps) {
   const router = useRouter();
-
-  const {
-    data: comics,
-    setData: setComics,
-    isLoading,
-    setIsLoading,
-  } = useFetch<ComicType>({
-    url: `/api/comic/${userId}`,
-  });
-
+  const limit = 6;
+  const [currPage, setCurrPage] = React.useState<number>(1);
+  const [reload, setReload] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [filter, setFilter, onChangeFilterHandler] = useInput();
   const [comic, setComic] = React.useState<ComicType>();
-
-  React.useEffect(() => {
-    if (comic) router.push(`/dashboard/comic/${comic._id}/chapters`);
-  }, [comic, router]);
+  const [comics, setComics] = React.useState<ComicType[] | []>([]);
+  const deleteId = React.useRef<unknown>();
+  const { data: fetchComics, isLoading } = useFetchSingle<TotalComicType>({
+    url: `/api/comic/${userId}?page=${currPage}&limit=${limit}`,
+    reload: reload,
+  });
+  const numberOfPages = (fetchComics?.numberOfPages || 0) as number;
 
   const editHandler = React.useCallback(
     (value: unknown) => {
@@ -48,32 +48,48 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
     [router]
   );
 
-  const deleteHandler = React.useCallback(
-    async (value: unknown) => {
+  const deleteHandler = React.useCallback(async (value: unknown) => {
+    try {
       await fetch(`/api/comic/delete/${value}`, {
         method: "DELETE",
-      })
-        .then(async (response) => {
-          setIsLoading(true);
-          const data = await response.json();
-          setComics((prev) => prev.filter((c) => c._id !== data._id));
+      }).then((response) => {
+        if (response.ok) {
           toast.success("Delete item successfully");
-        })
-        .finally(() => {
-          setTimeout(() => setIsLoading(false), 500);
-        });
-    },
-    [setComics, setIsLoading]
-  );
+
+          setTimeout(() => {
+            setReload(true);
+          }, 1);
+        }
+      });
+    } catch (error) {
+      toast.error(`Failed to delete comic, Error: ${error}`);
+    } finally {
+      setReload(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (fetchComics) setComics(fetchComics.comics);
+  }, [fetchComics]);
+
+  React.useEffect(() => {
+    if (comic) router.push(`/dashboard/comic/${comic._id}/chapters`);
+  }, [comic, router]);
 
   const comicColumns = React.useMemo<ColumnDef<ComicType>[]>(
     () => [
       {
         header: "No.",
-        cell: (row) => row.row.index + 1,
+        meta: {
+          tdClassName: "whitespace-nowrap min-w-[50px]",
+        },
+        cell: (row) => row.row.index + limit * (currPage - 1) + 1,
       },
       {
         header: "Name",
+        meta: {
+          tdClassName: "w-[99%]",
+        },
         cell: (row) => {
           return (
             <p
@@ -92,7 +108,7 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         cell: (row) => row.renderValue(),
         meta: {
           thClassName: "text-center",
-          tdClassName: "text-center",
+          tdClassName: "text-center whitespace-nowrap",
         },
         accessorKey: "status",
       },
@@ -101,7 +117,7 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         accessorFn: (row) => row.chapters?.length || 0,
         meta: {
           thClassName: "text-center",
-          tdClassName: "text-center",
+          tdClassName: "text-center min-w-[100px]",
         },
         accessorKey: "chapters",
       },
@@ -110,12 +126,15 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         cell: (row) => row.renderValue(),
         meta: {
           thClassName: "text-center",
-          tdClassName: "text-center",
+          tdClassName: "text-center min-w-[100px]",
         },
         accessorKey: "views",
       },
       {
         header: "Last Updated",
+        meta: {
+          tdClassName: "whitespace-nowrap min-w-[200px]",
+        },
         accessorFn: (row) =>
           DateTime.fromISO(row.last_update.toString()).toLocaleString(
             DateTime.DATETIME_SHORT
@@ -127,7 +146,7 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         accessorFn: (row) => row._id,
         meta: {
           thClassName: "text-center",
-          tdClassName: "text-center",
+          tdClassName: "text-center whitespace-nowrap",
         },
         cell: (row) => (
           <>
@@ -139,7 +158,10 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
               <PencilIcon className="w-5 h-5" />
             </IconButton>
             <IconButton
-              onClick={() => deleteHandler(row.getValue())}
+              onClick={() => {
+                deleteId.current = row.getValue();
+                setOpen(true);
+              }}
               variant="text"
               className="rounded-full z-10"
             >
@@ -149,7 +171,7 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         ),
       },
     ],
-    [editHandler, deleteHandler]
+    [editHandler, currPage]
   );
 
   return (
@@ -163,7 +185,7 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         />
 
         <div className="flex gap-x-2 items-center">
-          <OutlineInput text="Search" onChange={onChangeFilterHandler} />
+          {/* <OutlineInput text="Search" onChange={onChangeFilterHandler} /> */}
           <Button
             onClick={() => {
               router.push("/dashboard/comic/add");
@@ -176,18 +198,30 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="w-full h-96 flex justify-center items-center">
-          <Spinner />
-        </div>
+      {isLoading || comics.length === 0 ? (
+        <SkeletonTable />
       ) : (
-        <Table
-          data={comics}
-          columns={comicColumns}
-          text={filter}
-          setText={setFilter}
-        />
+        <>
+          <Table
+            data={comics}
+            columns={comicColumns}
+            text={filter}
+            setText={setFilter}
+          />
+
+          <Pagination
+            limit={5}
+            setCurrPage={setCurrPage}
+            pageCount={numberOfPages}
+          />
+        </>
       )}
+
+      <DeleteModal
+        onDeleteHandler={() => deleteHandler(deleteId.current)}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }

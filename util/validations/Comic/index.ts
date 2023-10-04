@@ -4,7 +4,13 @@ export const comicValidator = z.object({
   uploader: z.string(),
   chapters: z
     .object({
-      name: z.string(),
+      chapter_name: z.string(),
+      pages: z
+        .object({
+          page_number: z.number(),
+          page_img_url: z.string(),
+        })
+        .array(),
     })
     .array()
     .optional(),
@@ -19,3 +25,10 @@ export const comicValidator = z.object({
 });
 
 export type ComicType = z.infer<typeof comicValidator>;
+
+export const totalComicValidator = z.object({
+  comics: z.array(comicValidator),
+  numberOfPages: z.number(),
+});
+
+export type TotalComicType = z.infer<typeof totalComicValidator>;
