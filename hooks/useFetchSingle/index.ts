@@ -5,7 +5,7 @@ export interface FetchProps {
   reload?: boolean;
 }
 
-export default function useFetchSingle<Data>({ url, reload }: FetchProps) {
+export function useFetchSingle<Data>({ url, reload }: FetchProps) {
   const [data, setData] = React.useState<Data>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -35,3 +35,5 @@ export default function useFetchSingle<Data>({ url, reload }: FetchProps) {
     setIsLoading,
   };
 }
+
+export default useFetchSingle;

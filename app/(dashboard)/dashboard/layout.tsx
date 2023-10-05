@@ -1,5 +1,5 @@
-import { SidebarItemProps } from "@/components/ui/atoms/SidebarItem";
-import Layout from "@/components/ui/organisms/DashboardLayout";
+import { SidebarItemProps } from "@ui/atoms";
+import { Layout } from "@ui/organisms";
 
 const SIDEBAR_ITEMS: SidebarItemProps[] = [
   {

@@ -2,15 +2,16 @@
 
 import React from "react";
 
+import { ProfileMenu, ProfileMenuItemProps } from "@ui/molecules";
+
 import { signIn, useSession } from "next-auth/react";
 import { Button, Spinner } from "@material-tailwind/react";
-import ProfileMenu, { ProfileMenuItemProps } from "../../molecules/ProfileMenu";
 
 export interface ProfileProps {
   profileMenuItems: ProfileMenuItemProps[];
 }
 
-export default function Profile({ profileMenuItems }: ProfileProps) {
+export function Profile({ profileMenuItems }: ProfileProps) {
   const { data: session, status } = useSession();
 
   async function signInWithGoogle() {
@@ -48,3 +49,5 @@ export default function Profile({ profileMenuItems }: ProfileProps) {
     </>
   );
 }
+
+export default Profile;

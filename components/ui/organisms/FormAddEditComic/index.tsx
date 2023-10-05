@@ -1,17 +1,15 @@
 "use client";
 
 import React from "react";
-import { Button, Spinner } from "@material-tailwind/react";
-import StaticInput from "../../molecules/StaticInput";
-import AddChip from "../../molecules/AddChip";
-import { useChip } from "@hooks";
-import StaticSelect from "../../molecules/StaticSelect";
-import UploadInput from "../../atoms/UploadInput";
-import RichTextEditor from "../../atoms/RichTextEditor";
+
+import { UploadInput, RichTextEditor } from "@ui/atoms";
+import { StaticInput, AddChip, StaticSelect } from "@ui/molecules";
+import { useChip, useComicForm } from "@hooks";
 import { ComicType, comicValidator } from "@validators";
+
+import { Button, Spinner } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useComicForm from "@/hooks/useComicForm";
 
 export interface FormAddEditComicProps {
   statusData: string[];
@@ -22,7 +20,7 @@ export interface FormAddEditComicProps {
   comicData?: ComicType;
 }
 
-export default function FormAddEditComic({
+export function FormAddEditComic({
   statusData,
   genreData,
   userId,
@@ -181,3 +179,5 @@ export default function FormAddEditComic({
     </form>
   );
 }
+
+export default FormAddEditComic;

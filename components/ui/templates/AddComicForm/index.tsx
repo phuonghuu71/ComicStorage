@@ -1,15 +1,17 @@
-import { BC_DASHBOARD_COMIC_ADD } from "@/assets/constants/breadcrumbs";
-import BreadcrumbList from "../../molecules/BreadcrumbList";
-import Container from "../../atoms/Container";
-import Title from "../../atoms/Title";
-import FormAddEditComic from "../../organisms/FormAddEditComic";
-import { GENRE, STATUS } from "@/assets/constants/category";
+"use client";
+
+import { GENRE, STATUS } from "@assets/category";
+import { BC_DASHBOARD_COMIC_ADD } from "@assets/breadcrumbs";
+
+import { Container, Title } from "@ui/atoms";
+import { BreadcrumbList } from "@ui/molecules";
+import { FormAddEditComic } from "@ui/organisms";
 
 export interface AddComicFormProps {
   userId: string;
 }
 
-export default function AddComicForm({ userId }: AddComicFormProps) {
+export function AddComicForm({ userId }: AddComicFormProps) {
   return (
     <>
       <BreadcrumbList data={BC_DASHBOARD_COMIC_ADD} />
@@ -33,3 +35,5 @@ export default function AddComicForm({ userId }: AddComicFormProps) {
     </>
   );
 }
+
+export default AddComicForm;

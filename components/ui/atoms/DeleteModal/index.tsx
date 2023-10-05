@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import {
   Button,
@@ -9,7 +11,6 @@ import {
   DialogHeader,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
 
 export interface DeleteModalProps {
   open: boolean;
@@ -17,7 +18,7 @@ export interface DeleteModalProps {
   onDeleteHandler: () => void;
 }
 
-export default function DeleteModal({
+export function DeleteModal({
   open,
   setOpen,
   onDeleteHandler,
@@ -58,3 +59,5 @@ export default function DeleteModal({
     </Dialog>
   );
 }
+
+export default DeleteModal;

@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDbProps, User, connectToDB } from "@util";
-import { NextAuthOptions } from "next-auth";
+import { MongoDbProps, User as ComicUser, connectToDB } from "@utils";
+import { NextAuthOptions, User } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -26,12 +26,14 @@ export const authOptions: NextAuthOptions = {
 
           await connectToDB(props).catch(console.dir);
 
-          const userExist = await User.findOne({
+          console.log(email);
+
+          const userExist = await ComicUser.findOne({
             email: email,
           });
 
           if (!userExist) {
-            await User.create({
+            await ComicUser.create({
               email: email,
               name: name,
               image: image,
@@ -42,12 +44,13 @@ export const authOptions: NextAuthOptions = {
         return true;
       } catch (err) {
         console.log("Error checking if user exists:", err);
-
         return false;
       }
     },
     // async jwt({ token, user }) {
-    //   const dbUser = await User.findOne({ email: token.email });
+    //   const dbUser = (await ComicUser.findOne({ email: token.email })) as
+    //     | string
+    //     | null;
 
     //   if (!dbUser) {
     //     if (user) {
@@ -57,27 +60,33 @@ export const authOptions: NextAuthOptions = {
     //     return token;
     //   }
 
+    //   const parsedDbUser = JSON.parse(dbUser) as User;
+
     //   return {
-    //     id: dbUser._id.toString(),
-    //     name: dbUser.name,
-    //     email: dbUser.email,
-    //     picture: dbUser.image,
+    //     id: parsedDbUser.id,
+    //     name: parsedDbUser.name,
+    //     email: parsedDbUser.email,
+    //     picture: parsedDbUser.image,
     //   };
     // },
     async session({ session, token }) {
-      const sessionUser = await User.findOne({ email: session.user.email });
+      if (session.user.email) {
+        const sessionUser = await ComicUser.findOne({
+          email: session.user.email,
+        });
 
-      if (sessionUser && token) {
-        session.user.id = sessionUser._id.toString();
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.image = token.picture;
+        if (sessionUser && token) {
+          session.user.id = sessionUser._id.toString();
+          session.user.name = token.name;
+          session.user.email = token.email;
+          session.user.image = token.picture;
+        }
       }
 
       return session;
     },
     redirect() {
-      return "/dashboard/home";
+      return "/dashboard";
     },
   },
 };

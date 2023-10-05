@@ -13,11 +13,7 @@ export interface UseDragDropProps {
   onDeleteHandler: (idx: number) => void;
 }
 
-export default function useDragDrop({
-  chapterData,
-}: {
-  chapterData?: ChapterType;
-}) {
+export function useDragDrop({ chapterData }: { chapterData?: ChapterType }) {
   const [widgets, setWidgets] = React.useState<any[]>([]);
   const dragItem = React.useRef<number>(0);
   const dragOverItem = React.useRef<number>(0);
@@ -95,3 +91,5 @@ export default function useDragDrop({
     onDeleteHandler,
   } as const;
 }
+
+export default useDragDrop;

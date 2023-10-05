@@ -39,6 +39,6 @@ const ComicSchema = new Schema({
   },
 });
 
-const Comic = models["Comic"] || model("Comic", ComicSchema);
+const Comic = models?.Comic || model("Comic", ComicSchema);
 
 export { Comic };

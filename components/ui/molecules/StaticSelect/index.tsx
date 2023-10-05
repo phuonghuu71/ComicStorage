@@ -1,11 +1,6 @@
 "use client";
 
 import { Option, Select } from "@material-tailwind/react";
-import {
-  ControllerRenderProps,
-  FieldErrors,
-  UseFormRegister,
-} from "react-hook-form";
 
 /* eslint-disable-next-line */
 export interface StaticSelectProps {

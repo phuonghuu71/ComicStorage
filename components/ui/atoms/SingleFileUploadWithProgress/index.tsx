@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   IconButton,
@@ -8,8 +10,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Image from "next/image";
-import React from "react";
-import { UploadableFile } from "../../molecules/MultipleFilesUpload";
+import { FileError } from "react-dropzone";
+
+export interface UploadableFile {
+  file: File;
+  errors: FileError[];
+  url?: string;
+}
 
 export interface SingleFileUploadWithProgressProps {
   fileWrapper: UploadableFile;
@@ -56,7 +63,7 @@ function uploadFile(
   });
 }
 
-export default function SingleFileUploadWithProgress({
+export function SingleFileUploadWithProgress({
   fileWrapper,
   onDelete,
   onUpload,
@@ -133,3 +140,5 @@ export default function SingleFileUploadWithProgress({
     </div>
   );
 }
+
+export default SingleFileUploadWithProgress;

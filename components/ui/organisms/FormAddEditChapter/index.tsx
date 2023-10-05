@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import Container from "../../atoms/Container";
-import Title from "../../atoms/Title";
+
+import { Container, Title } from "@ui/atoms";
+import { StaticInput } from "@ui/molecules";
+import { useFetchSingle, useDragDrop } from "@hooks";
+import { ChapterType, chapterValidator } from "@validators";
+import AddPages from "../AddPages";
+
+import toast from "react-hot-toast";
 import { Button, Spinner } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
-import { ChapterType, chapterValidator } from "@/util/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import StaticInput from "../../molecules/StaticInput";
-import AddPages from "../AddPages";
-import toast from "react-hot-toast";
-import useDragDrop from "@/hooks/useDragDrop";
-import useFetchSingle from "@/hooks/useFetchSingle";
 import { useRouter } from "next/navigation";
 
 export interface FormAddEditChapterProps {
@@ -27,7 +27,7 @@ export interface PageProps {
   page_img_url: string;
 }
 
-export default function FormAddEditChapter({
+export function FormAddEditChapter({
   cloudName,
   comicName,
   comicId,
@@ -100,9 +100,11 @@ export default function FormAddEditChapter({
     )
       .then((response) => {
         if (response.status === 409) {
-          setError("chapter_name", {
-            message: response.statusText,
-          });
+          setTimeout(() => {
+            setError("chapter_name", {
+              message: response.statusText,
+            });
+          }, 1);
           return;
         }
         return response;
@@ -124,7 +126,7 @@ export default function FormAddEditChapter({
       })
       .finally(() => {
         clearErrors();
-        setIsLoading(true);
+        setIsLoading(false);
       });
   };
 
@@ -186,3 +188,5 @@ export default function FormAddEditChapter({
     </Container>
   );
 }
+
+export default FormAddEditChapter;

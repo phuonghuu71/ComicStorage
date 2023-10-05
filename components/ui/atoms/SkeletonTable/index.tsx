@@ -1,4 +1,4 @@
-export default function SkeletonTable() {
+export function SkeletonTable() {
   return (
     <>
       <div className="w-full mb-4 border border-blue-gray-100 rounded-xl overflow-y-scroll">
@@ -102,3 +102,5 @@ export default function SkeletonTable() {
     </>
   );
 }
+
+export default SkeletonTable;

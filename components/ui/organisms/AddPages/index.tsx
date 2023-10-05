@@ -1,13 +1,13 @@
 "use client";
 
-import { Typography } from "@material-tailwind/react";
-import HelperText from "../../atoms/HelperText";
-import MultipleFilesUpload from "../../molecules/MultipleFilesUpload";
-import Container from "../../atoms/Container";
-import ChapterItem, { urlType } from "../../molecules/ChapterItem";
-import { FieldErrors } from "react-hook-form";
 import React from "react";
-import { UseDragDropProps } from "@/hooks/useDragDrop";
+
+import { HelperText, Container } from "@ui/atoms";
+import { MultipleFilesUpload, ChapterItem, urlType } from "@ui/molecules";
+import { UseDragDropProps } from "@hooks";
+
+import { Typography } from "@material-tailwind/react";
+import { FieldErrors } from "react-hook-form";
 
 export interface AddPages extends UseDragDropProps {
   cloudName: string;
@@ -16,7 +16,7 @@ export interface AddPages extends UseDragDropProps {
   onChange: (...event: any[]) => void;
 }
 
-export default function AddPages({
+export function AddPages({
   name,
   cloudName,
   errors,
@@ -98,3 +98,5 @@ export default function AddPages({
     </>
   );
 }
+
+export default AddPages;

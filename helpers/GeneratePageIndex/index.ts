@@ -2,7 +2,7 @@ type pageProps = {
   pageIndex: number;
 };
 
-export default function GeneratePageIndex(
+export function GeneratePageIndex(
   pageSize: number,
   firstIndex: number,
   pageCount: number
@@ -26,3 +26,5 @@ export default function GeneratePageIndex(
 
   return pages;
 }
+
+export default GeneratePageIndex;

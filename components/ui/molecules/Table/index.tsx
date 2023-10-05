@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import {
   ColumnDef,
   flexRender,
@@ -9,8 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import React from "react";
 import { Spinner } from "@material-tailwind/react";
 
 export interface TableProps<TData extends object> {
@@ -22,7 +22,7 @@ export interface TableProps<TData extends object> {
   setRowSelect?: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function Table<TData extends object>({
+export function Table<TData extends object>({
   data,
   columns,
   text,
@@ -123,3 +123,5 @@ export default function Table<TData extends object>({
     </>
   );
 }
+
+export default Table;

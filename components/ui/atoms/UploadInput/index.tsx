@@ -1,5 +1,8 @@
-import { Input, InputProps } from "@material-tailwind/react";
+"use client";
+
 import HelperText from "../HelperText";
+
+import { Input, InputProps } from "@material-tailwind/react";
 import { FieldErrors } from "react-hook-form";
 
 /* eslint-disable-next-line */

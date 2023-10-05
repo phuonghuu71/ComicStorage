@@ -1,8 +1,9 @@
+import { AddComicForm } from "@ui/templates";
+
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import AddComicForm from "@/components/ui/templates/AddComicForm";
+import { authOptions } from "../../../../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   title: "Add Comic",

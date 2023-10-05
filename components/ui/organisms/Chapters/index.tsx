@@ -1,29 +1,25 @@
 "use client";
 
-import BreadcrumbList from "../../molecules/BreadcrumbList";
-import { BC_DASHBOARD_CHAPTERS } from "@/assets/constants/breadcrumbs";
-import useFetchSingle from "@/hooks/useFetchSingle";
-import { ChapterType, ComicType, TotalChapterType } from "@/util/validations";
-import { Button, IconButton, Spinner } from "@material-tailwind/react";
 import React from "react";
+
+import { BC_DASHBOARD_CHAPTERS } from "@assets/breadcrumbs";
+
+import { Title, DeleteModal, SkeletonTable, Container } from "@ui/atoms";
+import { BreadcrumbList, OutlineInput, Table, Pagination } from "@ui/molecules";
+import { useFetchSingle, useInput } from "@hooks";
+import { ChapterType, ComicType, TotalChapterType } from "@validators";
+
+import { Button, IconButton, Spinner } from "@material-tailwind/react";
 import { ColumnDef } from "@tanstack/react-table";
-import Container from "../../atoms/Container";
-import Table from "../../molecules/Table";
-import OutlineInput from "../../molecules/OutlineInput";
 import { PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Title from "../../atoms/Title";
 import { useRouter } from "next/navigation";
-import { useInput } from "@/hooks";
-import Pagination from "../../molecules/Pagination";
-import SkeletonTable from "../../atoms/SkeletonTable";
 import toast from "react-hot-toast";
-import DeleteModal from "../../atoms/DeleteModal";
 
 export interface ChaptersProps {
   comicId: string;
 }
 
-export default function Chapters({ comicId }: ChaptersProps) {
+export function Chapters({ comicId }: ChaptersProps) {
   const [filter, setFilter, onChangeFilterHandler] = useInput();
   const [reload, setReload] = React.useState<boolean>(false);
   const deleteId = React.useRef<unknown>();
@@ -36,7 +32,7 @@ export default function Chapters({ comicId }: ChaptersProps) {
     url: `/api/comic/get-by-comic-id/${comicId}`,
   });
 
-  const { data: fetchChapters } = useFetchSingle<TotalChapterType>({
+  const { data: fetchChapters, isLoading } = useFetchSingle<TotalChapterType>({
     url: `/api/chapter/${comicId}?page=${currPage}&limit=${limit}`,
     reload: reload,
   });
@@ -162,7 +158,7 @@ export default function Chapters({ comicId }: ChaptersProps) {
           </div>
         </div>
 
-        {!fetchChapters || chapters.length === 0 ? (
+        {isLoading ? (
           <SkeletonTable />
         ) : (
           <>
@@ -189,3 +185,5 @@ export default function Chapters({ comicId }: ChaptersProps) {
     </>
   );
 }
+
+export default Chapters;

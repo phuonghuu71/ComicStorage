@@ -2,30 +2,24 @@
 
 import React from "react";
 
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { Button } from "@material-tailwind/react";
-import Title from "../../atoms/Title";
-import OutlineInput from "../../molecules/OutlineInput";
-import { ComicType, TotalComicType } from "@/util/validations";
-import Table from "../../molecules/Table";
-import { ColumnDef } from "@tanstack/react-table";
+import { PencilIcon, XMarkIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { IconButton, Button } from "@material-tailwind/react";
 
+import { Title, SkeletonTable, DeleteModal } from "@ui/atoms";
+import { OutlineInput, Table, Pagination } from "@ui/molecules";
+import { useInput, useFetchSingle } from "@hooks";
+import { ComicType, TotalComicType } from "@validators";
+
+import { ColumnDef } from "@tanstack/react-table";
 import { DateTime } from "luxon";
-import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { IconButton } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useInput } from "@/hooks";
-import Pagination from "../../molecules/Pagination";
-import SkeletonTable from "../../atoms/SkeletonTable";
-import useFetchSingle from "@/hooks/useFetchSingle";
-import DeleteModal from "../../atoms/DeleteModal";
 
 export interface ComicStorageProps {
   userId: string;
 }
 
-export default function ComicStorage({ userId }: ComicStorageProps) {
+export function ComicStorage({ userId }: ComicStorageProps) {
   const router = useRouter();
   const limit = 6;
   const [currPage, setCurrPage] = React.useState<number>(1);
@@ -225,3 +219,5 @@ export default function ComicStorage({ userId }: ComicStorageProps) {
     </>
   );
 }
+
+export default ComicStorage;

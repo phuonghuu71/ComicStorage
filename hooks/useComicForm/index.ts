@@ -1,6 +1,8 @@
-import { ComicType, comicValidator } from "@/util/validations";
-import { useRouter } from "next/navigation";
 import React from "react";
+
+import { ComicType, comicValidator } from "@validators";
+
+import { useRouter } from "next/navigation";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -11,7 +13,7 @@ export interface UseComicFormProps {
   comicId?: string;
 }
 
-export default function useComicForm({
+export function useComicForm({
   reset,
   setError,
   isEdit,
@@ -61,3 +63,5 @@ export default function useComicForm({
     onSubmit,
   };
 }
+
+export default useComicForm;

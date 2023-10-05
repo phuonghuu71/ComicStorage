@@ -1,8 +1,10 @@
 "use client";
 
-import { List } from "@material-tailwind/react";
-import SidebarItem, { SidebarItemProps } from "../../atoms/SidebarItem";
 import React from "react";
+
+import { SidebarItem, SidebarItemProps } from "@ui/atoms";
+
+import { List } from "@material-tailwind/react";
 
 /* eslint-disable-next-line */
 export interface SidebarOptionsProps {

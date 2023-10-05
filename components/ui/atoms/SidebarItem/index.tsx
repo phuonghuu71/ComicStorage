@@ -1,10 +1,12 @@
 "use client";
 
+import React from "react";
+
+import DynamicIcon, { IconName } from "../DynamicIcon";
+
 import { usePathname } from "next/navigation";
 import { ListItem, ListItemPrefix } from "@material-tailwind/react";
-import DynamicIcon, { IconName } from "../DynamicIcon";
 import Link from "next/link";
-import React from "react";
 
 /* eslint-disable-next-line */
 export interface SidebarItemProps {

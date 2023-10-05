@@ -1,11 +1,12 @@
-import { BC_DASHBOARD_COMIC } from "@/assets/constants/breadcrumbs";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Container from "@/components/ui/atoms/Container";
-import BreadcrumbList from "@/components/ui/molecules/BreadcrumbList";
-import ComicStorage from "@/components/ui/organisms/ComicStorage";
+import { BC_DASHBOARD_COMIC } from "@assets/breadcrumbs";
+import { Container } from "@ui/atoms";
+import { BreadcrumbList } from "@ui/molecules";
+import { ComicStorage } from "@ui/organisms";
+
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
+import { authOptions } from "../../../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   title: "Comic Storage",

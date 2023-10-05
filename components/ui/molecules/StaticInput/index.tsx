@@ -1,11 +1,12 @@
 "use client";
 
+import { InputProps } from "@material-tailwind/react";
+
+import { HelperText } from "@ui/atoms";
+
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { Input, Tooltip, Typography } from "@material-tailwind/react";
-
-import { InputProps } from "@material-tailwind/react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import HelperText from "../../atoms/HelperText";
 
 export interface StaticInputProps extends InputProps {
   name: string;

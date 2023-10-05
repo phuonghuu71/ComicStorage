@@ -15,7 +15,7 @@ export interface ImageModalProps {
   url: any;
 }
 
-export default function ImageModal({ open, handleOpen, url }: ImageModalProps) {
+export function ImageModal({ open, handleOpen, url }: ImageModalProps) {
   return (
     <Dialog open={open} handler={handleOpen}>
       <DialogHeader>
@@ -27,10 +27,12 @@ export default function ImageModal({ open, handleOpen, url }: ImageModalProps) {
         divider
         className="flex justify-center items-center max-h-[500px] overflow-y-scroll p-0"
       >
-        <img
+        <Image
           src={url}
           alt="Preview_page"
           className="w-full h-fit object-center object-contain"
+          width={100}
+          height={100}
         />
       </DialogBody>
       <DialogFooter>
@@ -41,3 +43,5 @@ export default function ImageModal({ open, handleOpen, url }: ImageModalProps) {
     </Dialog>
   );
 }
+
+export default ImageModal;

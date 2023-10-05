@@ -10,7 +10,7 @@ export interface ProviderProps {
   session: Session;
 }
 
-export default function Provider({ children, session }: ProviderProps) {
+export function Provider({ children, session }: ProviderProps) {
   const theme = {
     breadcrumbs: {
       styles: {
@@ -42,3 +42,5 @@ export default function Provider({ children, session }: ProviderProps) {
     </SessionProvider>
   );
 }
+
+export default Provider;

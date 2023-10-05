@@ -1,5 +1,5 @@
-import { Comic, connectToDB } from "@/util";
-import { ComicType } from "@/util/validations";
+import { Comic, connectToDB } from "@utils";
+import { ComicType } from "@validators";
 
 type comicParams = {
   comicId: string;

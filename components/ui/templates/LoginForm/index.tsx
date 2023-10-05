@@ -1,12 +1,14 @@
 "use client";
 
-import { Button, Spinner, Typography } from "@material-tailwind/react";
-import { signIn } from "next-auth/react";
 import React from "react";
-import toast from "react-hot-toast";
-import DynamicIcon from "../../atoms/DynamicIcon";
 
-export default function LoginForm() {
+import { DynamicIcon } from "@ui/atoms";
+
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { Button, Spinner, Typography } from "@material-tailwind/react";
+
+export function LoginForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function loginWithGoogle() {
@@ -119,3 +121,5 @@ export default function LoginForm() {
     </>
   );
 }
+
+export default LoginForm;

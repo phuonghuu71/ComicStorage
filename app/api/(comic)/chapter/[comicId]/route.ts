@@ -1,7 +1,6 @@
-import PaginatingData from "@/helper/PaginatingData";
-import { Comic, connectToDB } from "@/util";
-import { Chapter } from "@/util/models/Chapter";
-import { ComicType } from "@/util/validations";
+import { PaginatingData } from "@helpers";
+import { Comic, connectToDB, Chapter } from "@utils";
+import { ComicType } from "@validators";
 import { NextApiRequest } from "next";
 
 export const GET = async (

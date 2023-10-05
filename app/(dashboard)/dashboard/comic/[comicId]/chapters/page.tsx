@@ -1,4 +1,4 @@
-import Chapters from "@/components/ui/organisms/Chapters";
+import { Chapters } from "@ui/organisms";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 

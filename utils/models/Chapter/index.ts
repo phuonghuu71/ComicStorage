@@ -18,6 +18,6 @@ const ChapterSchema = new Schema({
   ],
 });
 
-const Chapter = models["Chapter"] || model("Chapter", ChapterSchema);
+const Chapter = models?.Chapter || model("Chapter", ChapterSchema);
 
 export { Chapter };

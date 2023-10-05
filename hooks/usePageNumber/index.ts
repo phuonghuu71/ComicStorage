@@ -1,5 +1,5 @@
 import React from "react";
-import GeneratePageIndex from "@/helper/GeneratePageIndex";
+import { GeneratePageIndex } from "@helpers";
 
 export interface usePageNumberProps {
   pageSize: number;
@@ -7,7 +7,7 @@ export interface usePageNumberProps {
   currentPage: number;
 }
 
-export default function usePageNumber({
+export function usePageNumber({
   pageSize,
   pageCount,
   currentPage,
@@ -24,3 +24,5 @@ export default function usePageNumber({
 
   return result;
 }
+
+export default usePageNumber;

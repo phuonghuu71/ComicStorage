@@ -1,5 +1,5 @@
-import PaginatingData from "@/helper/PaginatingData";
-import { Comic, connectToDB } from "@/util";
+import { PaginatingData } from "@helpers";
+import { Comic, connectToDB } from "@utils";
 import type { NextApiRequest } from "next";
 
 type userParams = {

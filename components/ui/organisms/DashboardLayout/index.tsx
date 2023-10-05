@@ -1,14 +1,17 @@
 "use client";
 
 import React from "react";
+
+import { PROFILE_MENU_ITEMS } from "@assets/navigation";
+
+import { SidebarItemProps, DynamicIcon } from "@ui/atoms";
+import { SidebarOptions } from "@ui/molecules";
+import Profile from "../Profile";
+
 import { IconButton, Typography } from "@material-tailwind/react";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
-import SidebarOptions from "../../molecules/SidebarOptions";
-import { SidebarItemProps } from "../../atoms/SidebarItem";
-import Profile from "../Profile";
-import { PROFILE_MENU_ITEMS } from "@/assets/constants/navigation";
-import DynamicIcon from "../../atoms/DynamicIcon";
-export default function Layout({
+
+export function Layout({
   children,
   sidebarItems,
 }: {
@@ -63,3 +66,5 @@ export default function Layout({
     </div>
   );
 }
+
+export default Layout;

@@ -1,4 +1,4 @@
-import { Comic, connectToDB } from "@/util";
+import { Comic, connectToDB } from "@utils";
 import type { NextApiRequest } from "next";
 
 type comicParams = {

@@ -1,22 +1,15 @@
 "use client";
 
 import React from "react";
-import { FileError, FileRejection, useDropzone } from "react-dropzone";
-import SingleFileUploadWithProgress from "../../atoms/SingleFileUploadWithProgress";
+import { FileRejection, useDropzone } from "react-dropzone";
+import {
+  SingleFileUploadWithProgress,
+  Container,
+  UploadableFile,
+} from "@ui/atoms";
 import { Typography } from "@material-tailwind/react";
-import Container from "../../atoms/Container";
 
-export interface UploadableFile {
-  file: File;
-  errors: FileError[];
-  url?: string;
-}
-
-export default function MultipleFilesUpload({
-  cloudName,
-}: {
-  cloudName: string;
-}) {
+export function MultipleFilesUpload({ cloudName }: { cloudName: string }) {
   const [files, setFiles] = React.useState<UploadableFile[]>([]);
   const onDrop = React.useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -88,3 +81,5 @@ export default function MultipleFilesUpload({
     </div>
   );
 }
+
+export default MultipleFilesUpload;

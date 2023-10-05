@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
 
-export default function PaginatingData(req: NextApiRequest) {
+export function PaginatingData(req: NextApiRequest) {
   const url = new URL(req.url || "");
   const searchParams = new URLSearchParams(url.search);
   const page = searchParams.get("page");
@@ -15,3 +15,5 @@ export default function PaginatingData(req: NextApiRequest) {
     _startIndex,
   };
 }
+
+export default PaginatingData;

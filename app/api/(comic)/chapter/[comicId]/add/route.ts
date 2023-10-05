@@ -1,6 +1,5 @@
-import { Comic, connectToDB } from "@/util";
-import { Chapter } from "@/util/models/Chapter";
-import { ChapterType, ComicType } from "@/util/validations";
+import { Comic, connectToDB, Chapter } from "@utils";
+import { ChapterType, ComicType } from "@validators";
 
 type chapterParams = {
   comicId: string;

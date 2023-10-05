@@ -23,7 +23,7 @@ export type urlType = {
   original_filename: string;
 };
 
-export default function ChapterItem({
+export function ChapterItem({
   chapterIdx,
   chapter,
   onDragStartHandler,
@@ -69,3 +69,5 @@ export default function ChapterItem({
     </div>
   );
 }
+
+export default ChapterItem;

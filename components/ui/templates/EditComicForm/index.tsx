@@ -1,13 +1,14 @@
 "use client";
 
-import { GENRE, STATUS } from "@/assets/constants/category";
-import Container from "../../atoms/Container";
-import Title from "../../atoms/Title";
-import BreadcrumbList from "../../molecules/BreadcrumbList";
-import FormAddEditComic from "../../organisms/FormAddEditComic";
-import { BC_DASHBOARD_COMIC_EDIT } from "@/assets/constants/breadcrumbs";
-import useFetchSingle from "@/hooks/useFetchSingle";
-import { ComicType } from "@/util/validations";
+import { GENRE, STATUS } from "@assets/category";
+import { BC_DASHBOARD_COMIC_EDIT } from "@assets/breadcrumbs";
+
+import { Container, Title } from "@ui/atoms";
+import { BreadcrumbList } from "@ui/molecules";
+import { FormAddEditComic } from "@ui/organisms";
+import { useFetchSingle } from "@hooks";
+import { ComicType } from "@validators";
+
 import { Spinner } from "@material-tailwind/react";
 
 export interface EditComicFormProps {
@@ -15,7 +16,7 @@ export interface EditComicFormProps {
   userId: string;
 }
 
-export default function EditComicForm({ comicId, userId }: EditComicFormProps) {
+export function EditComicForm({ comicId, userId }: EditComicFormProps) {
   const { data } = useFetchSingle<ComicType>({
     url: `/api/comic/get-by-comic-id/${comicId}`,
   });
@@ -49,3 +50,5 @@ export default function EditComicForm({ comicId, userId }: EditComicFormProps) {
     </>
   );
 }
+
+export default EditComicForm;

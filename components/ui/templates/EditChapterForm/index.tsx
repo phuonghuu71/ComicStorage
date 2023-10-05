@@ -1,11 +1,13 @@
 "use client";
 
+import { BC_DASHBOARD_CHAPTERS_EDIT } from "@assets/breadcrumbs";
+
+import { BreadcrumbList } from "@ui/molecules";
+import { FormAddEditChapter } from "@ui/organisms";
+import { useFetchSingle } from "@hooks";
+import { ComicType } from "@validators";
+
 import { Spinner } from "@material-tailwind/react";
-import BreadcrumbList from "../../molecules/BreadcrumbList";
-import { BC_DASHBOARD_CHAPTERS_EDIT } from "@/assets/constants/breadcrumbs";
-import useFetchSingle from "@/hooks/useFetchSingle";
-import { ComicType } from "@/util/validations";
-import FormAddEditChapter from "../../organisms/FormAddEditChapter";
 
 export interface EditChapterFormProps {
   comicId: string;
@@ -13,7 +15,7 @@ export interface EditChapterFormProps {
   cloudName: string;
 }
 
-export default function EditChapterForm({
+export function EditChapterForm({
   comicId,
   chapterId,
   cloudName,
@@ -41,3 +43,5 @@ export default function EditChapterForm({
     </>
   );
 }
+
+export default EditChapterForm;

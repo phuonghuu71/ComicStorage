@@ -5,3 +5,4 @@ export * from "./useFetchSingle";
 export * from "./usePageNumber";
 export * from "./useComicForm";
 export * from "./useDragDrop";
+export * from "./useComicForm";

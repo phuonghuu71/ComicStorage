@@ -1,21 +1,20 @@
 "use client";
 
+import { BC_DASHBOARD_CHAPTERS_ADD } from "@assets/breadcrumbs";
+
+import { BreadcrumbList } from "@ui/molecules";
+import { FormAddEditChapter } from "@ui/organisms";
+import { ComicType } from "@validators";
+import { useFetchSingle } from "@hooks";
+
 import { Spinner } from "@material-tailwind/react";
-import BreadcrumbList from "../../molecules/BreadcrumbList";
-import { BC_DASHBOARD_CHAPTERS_ADD } from "@/assets/constants/breadcrumbs";
-import useFetchSingle from "@/hooks/useFetchSingle";
-import { ComicType } from "@/util/validations";
-import FormAddEditChapter from "../../organisms/FormAddEditChapter";
 
 export interface AddChapterFormProps {
   comicId: string;
   cloudName: string;
 }
 
-export default function AddChapterForm({
-  comicId,
-  cloudName,
-}: AddChapterFormProps) {
+export function AddChapterForm({ comicId, cloudName }: AddChapterFormProps) {
   const { data } = useFetchSingle<ComicType>({
     url: `/api/comic/get-by-comic-id/${comicId}`,
   });
@@ -37,3 +36,5 @@ export default function AddChapterForm({
     </>
   );
 }
+
+export default AddChapterForm;

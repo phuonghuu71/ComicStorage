@@ -1,3 +1,5 @@
+"use client";
+
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { Typography } from "@material-tailwind/react";
 
@@ -6,7 +8,7 @@ export interface HelperTextProps {
   isError?: boolean;
 }
 
-export default function HelperText({ text, isError }: HelperTextProps) {
+export function HelperText({ text, isError }: HelperTextProps) {
   return (
     <Typography
       variant="small"
@@ -18,3 +20,5 @@ export default function HelperText({ text, isError }: HelperTextProps) {
     </Typography>
   );
 }
+
+export default HelperText;

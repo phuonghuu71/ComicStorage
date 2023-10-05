@@ -4,7 +4,7 @@ import { Typography } from "@material-tailwind/react";
 
 /* eslint-disable-next-line */
 export interface TitleProps {
-  title: string;
+  title: React.ReactNode;
   description?: string;
   containerClass?: string;
 }

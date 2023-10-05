@@ -3,8 +3,7 @@
 import React from "react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Table } from "@tanstack/react-table";
-import usePageNumber from "@/hooks/usePageNumber";
+import { usePageNumber } from "@hooks";
 
 /* eslint-disable-next-line */
 export interface PaginationProps {

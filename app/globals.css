@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+.prev {
+  @apply bg-white rounded-full p-4 text-black hover:bg-purple-500 hover:text-white transition-colors cursor-pointer !absolute left-2 top-1/2 -translate-y-1/2 z-10;
+}
+
+.next {
+  @apply bg-white rounded-full p-4 text-black hover:bg-purple-500 hover:text-white transition-colors cursor-pointer !absolute right-2 top-1/2 -translate-y-1/2 z-10;
+}
+
+.background-animate {
+  background-size: 400%;
+
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: BackgroundMover 3s ease infinite;
+}
+
+@keyframes BackgroundMover {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @layer base {
   ::-webkit-scrollbar {
     @apply w-0 bg-transparent;

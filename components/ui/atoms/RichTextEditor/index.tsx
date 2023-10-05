@@ -1,3 +1,5 @@
+"use client";
+
 import { Typography } from "@material-tailwind/react";
 import { Editor, IAllProps } from "@tinymce/tinymce-react";
 import { FieldErrors } from "react-hook-form";

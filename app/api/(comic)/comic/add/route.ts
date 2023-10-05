@@ -1,4 +1,4 @@
-import { Comic, connectToDB } from "@/util";
+import { Comic, connectToDB } from "@utils";
 
 export const POST = async (req: Request) => {
   try {
