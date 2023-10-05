@@ -1,5 +1,6 @@
-import { connectToDB, Chapter } from "@utils";
-import { ChapterType } from "@validators";
+import { connectToDB } from "@database";
+import { Chapter } from "@models/Chapter";
+import { ChapterType } from "@validators/Chapter";
 
 export const PATCH = async (
   req: Request,

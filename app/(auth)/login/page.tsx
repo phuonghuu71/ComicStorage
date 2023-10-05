@@ -1,4 +1,4 @@
-import { LoginForm } from "@ui/templates";
+import LoginForm from "@ui/templates/LoginForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -2,10 +2,14 @@
 
 import React from "react";
 
-import { UploadInput, RichTextEditor } from "@ui/atoms";
-import { StaticInput, AddChip, StaticSelect } from "@ui/molecules";
-import { useChip, useComicForm } from "@hooks";
-import { ComicType, comicValidator } from "@validators";
+import UploadInput from "../../atoms/UploadInput";
+import RichTextEditor from "../../atoms/RichTextEditor";
+import StaticInput from "../../molecules/StaticInput";
+import AddChip from "../../molecules/AddChip";
+import StaticSelect from "../../molecules/StaticSelect";
+import useChip from "@hooks/useChip";
+import useComicForm from "@hooks/useComicForm";
+import { ComicType, comicValidator } from "@validators/Comic";
 
 import { Button, Spinner } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";

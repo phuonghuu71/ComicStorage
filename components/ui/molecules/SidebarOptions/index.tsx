@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { SidebarItem, SidebarItemProps } from "@ui/atoms";
+import SidebarItem, { SidebarItemProps } from "../../atoms/SidebarItem";
 
 import { List } from "@material-tailwind/react";
 

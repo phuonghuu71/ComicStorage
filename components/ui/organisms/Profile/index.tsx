@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ProfileMenu, ProfileMenuItemProps } from "@ui/molecules";
+import ProfileMenu, { ProfileMenuItemProps } from "../../molecules/ProfileMenu";
 
 import { signIn, useSession } from "next-auth/react";
 import { Button, Spinner } from "@material-tailwind/react";

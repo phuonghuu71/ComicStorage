@@ -20,14 +20,15 @@
     ],
     "paths": {
       "@assets/*": ["./assets/constants/*"],
-      "@ui/atoms": ["./components/ui/atoms/index.ts"],
-      "@ui/molecules": ["./components/ui/molecules/index.ts"],
-      "@ui/organisms": ["./components/ui/organisms/index.ts"],
-      "@ui/templates": ["./components/ui/templates/index.ts"],
-      "@hooks": ["./hooks/index.ts"],
-      "@utils": ["./utils/index.ts"],
-      "@validators": ["./utils/validations/index.ts"],
-      "@helpers": ["./helpers/index.ts"]
+      "@ui/atoms/*": ["./components/ui/atoms/*"],
+      "@ui/molecules/*": ["./components/ui/molecules/*"],
+      "@ui/organisms/*": ["./components/ui/organisms/*"],
+      "@ui/templates/*": ["./components/ui/templates/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@database": ["./utils/Database/index.ts"],
+      "@models/*": ["./utils/models/*"],
+      "@validators/*": ["./utils/validations/*"],
+      "@helpers/*": ["./helpers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

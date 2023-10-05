@@ -1,4 +1,4 @@
-import { AddComicForm } from "@ui/templates";
+import AddComicForm from "@ui/templates/AddComicForm";
 
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";

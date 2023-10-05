@@ -16,3 +16,5 @@ export function useInput() {
 
   return [text, setText, onChangeTextHandler] as const;
 }
+
+export default useInput;

@@ -1,5 +1,6 @@
 import { CATEGORY_MENU_ITEMS } from "@assets/navigation";
-import { Header, Footer } from "@ui/templates";
+import Header from "@ui/templates/Header";
+import Footer from "@ui/templates/Footer";
 
 export default function HomeLayout({
   children,

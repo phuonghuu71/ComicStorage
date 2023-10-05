@@ -4,10 +4,18 @@ import React from "react";
 
 import { BC_DASHBOARD_CHAPTERS } from "@assets/breadcrumbs";
 
-import { Title, DeleteModal, SkeletonTable, Container } from "@ui/atoms";
-import { BreadcrumbList, OutlineInput, Table, Pagination } from "@ui/molecules";
-import { useFetchSingle, useInput } from "@hooks";
-import { ChapterType, ComicType, TotalChapterType } from "@validators";
+import Container from "../../atoms/Container";
+import Title from "../../atoms/Title";
+import DeleteModal from "../../atoms/DeleteModal";
+import SkeletonTable from "../../atoms/SkeletonTable";
+import BreadcrumbList from "../../molecules/BreadcrumbList";
+import OutlineInput from "../../molecules/OutlineInput";
+import Table from "../../molecules/Table";
+import Pagination from "../../molecules/Pagination";
+import useFetchSingle from "@hooks/useFetchSingle";
+import useInput from "@hooks/useInput";
+import { ComicType } from "@validators/Comic";
+import { ChapterType, TotalChapterType } from "@validators/Chapter";
 
 import { Button, IconButton, Spinner } from "@material-tailwind/react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -170,7 +178,8 @@ export function Chapters({ comicId }: ChaptersProps) {
             />
             <Pagination
               limit={5}
-              setCurrPage={setCurrPage}
+              active={currPage}
+              setActive={setCurrPage}
               pageCount={numberOfPages}
             />
           </>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ComicType, comicValidator } from "@validators";
+import { ComicType, comicValidator } from "@validators/Comic";
 
 import { useRouter } from "next/navigation";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
@@ -44,7 +44,6 @@ export function useComicForm({
         if (response && response.ok) {
           if (isEdit) {
             toast.success("Successfully update comic.");
-            router.push("/dashboard/comic");
           } else toast.success("Successfully create new comic.");
 
           reset();
@@ -55,6 +54,8 @@ export function useComicForm({
       })
       .finally(() => {
         setIsLoading(false);
+
+        router.push("/dashboard/comic");
       });
   };
 

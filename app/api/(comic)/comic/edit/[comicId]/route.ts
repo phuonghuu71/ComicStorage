@@ -1,5 +1,6 @@
-import { Comic, connectToDB } from "@utils";
-import { ComicType } from "@validators";
+import { connectToDB } from "@database";
+import { Comic } from "@models/Comic";
+import { ComicType } from "@validators/Comic";
 
 type comicParams = {
   comicId: string;

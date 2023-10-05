@@ -5,10 +5,15 @@ import React from "react";
 import { PencilIcon, XMarkIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { IconButton, Button } from "@material-tailwind/react";
 
-import { Title, SkeletonTable, DeleteModal } from "@ui/atoms";
-import { OutlineInput, Table, Pagination } from "@ui/molecules";
-import { useInput, useFetchSingle } from "@hooks";
-import { ComicType, TotalComicType } from "@validators";
+import Title from "../../atoms/Title";
+import SkeletonTable from "../../atoms/SkeletonTable";
+import DeleteModal from "../../atoms/DeleteModal";
+import OutlineInput from "../../molecules/OutlineInput";
+import Table from "../../molecules/Table";
+import Pagination from "../../molecules/Pagination";
+import useInput from "@hooks/useInput";
+import useFetchSingle from "@hooks/useFetchSingle";
+import { ComicType, TotalComicType } from "@validators/Comic";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DateTime } from "luxon";
@@ -205,7 +210,8 @@ export function ComicStorage({ userId }: ComicStorageProps) {
 
           <Pagination
             limit={5}
-            setCurrPage={setCurrPage}
+            active={currPage}
+            setActive={setCurrPage}
             pageCount={numberOfPages}
           />
         </>

@@ -1,4 +1,6 @@
-import { Comic, connectToDB, Chapter } from "@utils";
+import { connectToDB } from "@database";
+import { Chapter } from "@models/Chapter";
+import { Comic } from "@models/Comic";
 import { NextApiHandler } from "next";
 
 type chapterParams = {

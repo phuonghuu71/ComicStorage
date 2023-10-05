@@ -1,7 +1,7 @@
 import { BC_DASHBOARD_COMIC } from "@assets/breadcrumbs";
-import { Container } from "@ui/atoms";
-import { BreadcrumbList } from "@ui/molecules";
-import { ComicStorage } from "@ui/organisms";
+import Container from "@ui/atoms/Container";
+import BreadcrumbList from "@ui/molecules/BreadcrumbList";
+import ComicStorage from "@ui/organisms/ComicStorage";
 
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";

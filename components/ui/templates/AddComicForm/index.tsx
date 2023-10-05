@@ -3,9 +3,10 @@
 import { GENRE, STATUS } from "@assets/category";
 import { BC_DASHBOARD_COMIC_ADD } from "@assets/breadcrumbs";
 
-import { Container, Title } from "@ui/atoms";
-import { BreadcrumbList } from "@ui/molecules";
-import { FormAddEditComic } from "@ui/organisms";
+import Container from "../../atoms/Container";
+import Title from "../../atoms/Title";
+import BreadcrumbList from "../../molecules/BreadcrumbList";
+import FormAddEditComic from "../../organisms/FormAddEditComic";
 
 export interface AddComicFormProps {
   userId: string;

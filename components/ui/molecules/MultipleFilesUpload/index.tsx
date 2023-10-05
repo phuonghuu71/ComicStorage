@@ -2,11 +2,10 @@
 
 import React from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
-import {
-  SingleFileUploadWithProgress,
-  Container,
+import Container from "../../atoms/Container";
+import SingleFileUploadWithProgress, {
   UploadableFile,
-} from "@ui/atoms";
+} from "../../atoms/SingleFileUploadWithProgress";
 import { Typography } from "@material-tailwind/react";
 
 export function MultipleFilesUpload({ cloudName }: { cloudName: string }) {

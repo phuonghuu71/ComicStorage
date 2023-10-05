@@ -4,8 +4,10 @@ import React from "react";
 
 import { PROFILE_MENU_ITEMS } from "@assets/navigation";
 
-import { OutlineInput, Navigation, MenuItems, MenuProps } from "@ui/molecules";
-import { Profile } from "@ui/organisms";
+import OutlineInput from "../../molecules/OutlineInput";
+import Navigation from "../../molecules/Navigation";
+import MenuItems, { MenuProps } from "../../molecules/MenuItems";
+import Profile from "../../organisms/Profile";
 
 import {
   Accordion,
@@ -50,7 +52,7 @@ export function Header({ menu }: HeaderProps) {
         type="search"
       />
 
-      <Profile profileMenuItems={PROFILE_MENU_ITEMS} />
+      {/* <Profile profileMenuItems={PROFILE_MENU_ITEMS} /> */}
     </Navigation>
   );
 }

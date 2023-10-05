@@ -2,10 +2,10 @@
 
 import { BC_DASHBOARD_CHAPTERS_EDIT } from "@assets/breadcrumbs";
 
-import { BreadcrumbList } from "@ui/molecules";
-import { FormAddEditChapter } from "@ui/organisms";
-import { useFetchSingle } from "@hooks";
-import { ComicType } from "@validators";
+import BreadcrumbList from "../../molecules/BreadcrumbList";
+import FormAddEditChapter from "../../organisms/FormAddEditChapter";
+import useFetchSingle from "@hooks/useFetchSingle";
+import { ComicType } from "@validators/Comic";
 
 import { Spinner } from "@material-tailwind/react";
 

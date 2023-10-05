@@ -4,14 +4,15 @@ import React from "react";
 
 import { PROFILE_MENU_ITEMS } from "@assets/navigation";
 
-import { SidebarItemProps, DynamicIcon } from "@ui/atoms";
-import { SidebarOptions } from "@ui/molecules";
+import { SidebarItemProps } from "../../atoms/SidebarItem";
+import DynamicIcon from "../../atoms/DynamicIcon";
+import SidebarOptions from "../../molecules/SidebarOptions";
 import Profile from "../Profile";
 
 import { IconButton, Typography } from "@material-tailwind/react";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 
-export function Layout({
+export function DashboardLayout({
   children,
   sidebarItems,
 }: {
@@ -67,4 +68,4 @@ export function Layout({
   );
 }
 
-export default Layout;
+export default DashboardLayout;

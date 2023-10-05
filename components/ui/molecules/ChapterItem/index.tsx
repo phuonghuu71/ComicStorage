@@ -3,7 +3,7 @@
 import React from "react";
 
 import { IconButton, Typography } from "@material-tailwind/react";
-import { UploadableFile } from "../MultipleFilesUpload";
+import { UploadableFile } from "../../atoms/SingleFileUploadWithProgress";
 import { EyeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import ImageModal from "../ImageModal";
 

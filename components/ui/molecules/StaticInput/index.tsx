@@ -2,7 +2,7 @@
 
 import { InputProps } from "@material-tailwind/react";
 
-import { HelperText } from "@ui/atoms";
+import HelperText from "../../atoms/HelperText";
 
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { Input, Tooltip, Typography } from "@material-tailwind/react";

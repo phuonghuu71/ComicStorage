@@ -1,5 +1,5 @@
 import React from "react";
-import { useInput } from "..";
+import { useInput } from "../useInput";
 
 export interface useChipProps {
   deleteItemFromCurrentList: (item: string) => void;
@@ -52,3 +52,5 @@ export function useChip(inputList: string[]) {
     onChangeTextHandler,
   };
 }
+
+export default useChip;

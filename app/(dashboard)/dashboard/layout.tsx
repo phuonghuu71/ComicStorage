@@ -1,5 +1,5 @@
-import { SidebarItemProps } from "@ui/atoms";
-import { Layout } from "@ui/organisms";
+import { SidebarItemProps } from "@ui/atoms/SidebarItem";
+import { DashboardLayout } from "@ui/organisms/DashboardLayout";
 
 const SIDEBAR_ITEMS: SidebarItemProps[] = [
   {
@@ -19,10 +19,12 @@ const SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
 ];
 
-export default function DashboardLayout({
+export default function DashboarLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <Layout sidebarItems={SIDEBAR_ITEMS}>{children}</Layout>;
+  return (
+    <DashboardLayout sidebarItems={SIDEBAR_ITEMS}>{children}</DashboardLayout>
+  );
 }

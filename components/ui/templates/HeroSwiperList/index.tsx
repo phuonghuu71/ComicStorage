@@ -1,6 +1,8 @@
 "use client";
 
-import { SwiperCard, HeroCard, ComicCardProps } from "@ui/molecules";
+import SwiperCard from "../../molecules/SwiperCard";
+import HeroCard from "../../molecules/HeroCard";
+import { ComicCardProps } from "../../molecules/ComicCard";
 
 import { SwiperSlide } from "swiper/react";
 

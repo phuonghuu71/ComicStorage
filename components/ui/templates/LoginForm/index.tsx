@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { DynamicIcon } from "@ui/atoms";
+import DynamicIcon from "../../atoms/DynamicIcon";
 
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";

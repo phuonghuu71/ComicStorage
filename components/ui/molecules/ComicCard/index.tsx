@@ -16,11 +16,12 @@ import Image from "next/image";
 export interface ComicCardProps {
   title: string;
   imgUrl: string;
-  desc: string;
+  desc: string | JSX.Element | JSX.Element[];
   uploader: string;
   lastUpdated: string;
   commentCount: number;
   chapterCount: number;
+  onClick?: () => void;
 }
 
 export function ComicCard({
@@ -31,15 +32,19 @@ export function ComicCard({
   lastUpdated,
   commentCount,
   chapterCount,
+  onClick,
 }: ComicCardProps) {
   return (
-    <Card className="shadow-none border border-blue-gray-100 flex-row mb-4 last:mb-0">
+    <Card
+      onClick={onClick}
+      className="cursor-pointer group shadow-none border border-blue-gray-100 flex-row mb-4 last:mb-0"
+    >
       <CardHeader className="max-w-[200px] max-h-[180px] shrink-0 w-full m-0 rounded-tr-none rounded-br-none shadow-none hidden lg:block">
         <Image
           src={imgUrl}
           width={500}
           height={500}
-          className="w-full min-h-[180px] object-cover object-center"
+          className="group-hover:scale-105 w-full min-h-[180px] object-cover object-center transition-transform"
           alt="cover"
         />
       </CardHeader>
@@ -52,7 +57,7 @@ export function ComicCard({
             {title}
           </Typography>
 
-          <Typography as={"p"} className="line-clamp-2">
+          <Typography as={"div"} className="line-clamp-2">
             {desc}
           </Typography>
         </CardBody>

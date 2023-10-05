@@ -2,9 +2,11 @@
 
 import React from "react";
 
-import { HelperText, Container } from "@ui/atoms";
-import { MultipleFilesUpload, ChapterItem, urlType } from "@ui/molecules";
-import { UseDragDropProps } from "@hooks";
+import HelperText from "../../atoms/HelperText";
+import Container from "../../atoms/Container";
+import ChapterItem, { urlType } from "../../molecules/ChapterItem";
+import MultipleFilesUpload from "../../molecules/MultipleFilesUpload";
+import { UseDragDropProps } from "@hooks/useDragDrop";
 
 import { Typography } from "@material-tailwind/react";
 import { FieldErrors } from "react-hook-form";

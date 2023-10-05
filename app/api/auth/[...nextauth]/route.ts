@@ -1,6 +1,7 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDbProps, User as ComicUser, connectToDB } from "@utils";
+import { MongoDbProps, connectToDB } from "@database";
+import { User as ComicUser } from "@models/User";
 import { NextAuthOptions, User } from "next-auth";
 
 export const authOptions: NextAuthOptions = {

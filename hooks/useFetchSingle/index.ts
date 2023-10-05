@@ -1,4 +1,5 @@
 import React from "react";
+import { setTimeout } from "timers";
 
 export interface FetchProps {
   url: string;
@@ -18,7 +19,9 @@ export function useFetchSingle<Data>({ url, reload }: FetchProps) {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   }, [url]);
 

@@ -1,4 +1,5 @@
-import { connectToDB, Chapter } from "@utils";
+import { connectToDB } from "@database";
+import { Chapter } from "@models/Chapter";
 import { NextApiRequest } from "next";
 
 export const GET = async (

@@ -2,11 +2,13 @@
 
 import React from "react";
 
-import { Container, Title } from "@ui/atoms";
-import { StaticInput } from "@ui/molecules";
-import { useFetchSingle, useDragDrop } from "@hooks";
-import { ChapterType, chapterValidator } from "@validators";
+import Container from "../../atoms/Container";
+import Title from "../../atoms/Title";
+import StaticInput from "../../molecules/StaticInput";
 import AddPages from "../AddPages";
+import useFetchSingle from "@hooks/useFetchSingle";
+import useDragDrop from "@hooks/useDragDrop";
+import { ChapterType, chapterValidator } from "@validators/Chapter";
 
 import toast from "react-hot-toast";
 import { Button, Spinner } from "@material-tailwind/react";

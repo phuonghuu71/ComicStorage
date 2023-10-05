@@ -3,42 +3,23 @@ import { connectToDB } from "@database";
 import { Comic } from "@models/Comic";
 import type { NextApiRequest } from "next";
 
-type userParams = {
-  uploaderId: string;
-};
-
-export const GET = async (
-  req: NextApiRequest,
-  {
-    params,
-  }: {
-    params: userParams;
-  }
-) => {
+export const GET = async (req: NextApiRequest) => {
   try {
-    const { uploaderId } = params;
-
     const { _limit, _startIndex } = PaginatingData(req);
 
     await connectToDB({
       mongoDBUri: process.env.MONGODB_URI,
     });
 
-    const res = await Comic.find({
-      uploader: {
-        _id: uploaderId,
-      },
-    })
-      .select(["-cover"])
+    const res = await Comic.find({})
       .populate("uploader")
+      .sort({
+        last_update: -1,
+      })
       .limit(_limit)
       .skip(_startIndex);
 
-    const countComics = await Comic.find({
-      uploader: {
-        _id: uploaderId,
-      },
-    })
+    const countComics = await Comic.find({})
       .select(["-cover", "-chapters"])
       .countDocuments();
 

@@ -1,4 +1,4 @@
-import { EditChapterForm } from "@ui/templates";
+import EditChapterForm from "@ui/templates/EditChapterForm";
 
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";

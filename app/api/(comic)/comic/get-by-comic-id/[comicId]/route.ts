@@ -1,4 +1,5 @@
-import { Comic, connectToDB } from "@utils";
+import { connectToDB } from "@database";
+import { Comic } from "@models/Comic";
 import type { NextApiRequest } from "next";
 
 type comicParams = {
@@ -22,7 +23,9 @@ export const GET = async (
 
     const res = await Comic.findOne({
       _id: comicId,
-    }).select(["-chapters"]);
+    })
+      .select(["-chapters"])
+      .populate("uploader");
 
     const comicData = JSON.stringify(res) as string;
 

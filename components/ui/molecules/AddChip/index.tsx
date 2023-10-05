@@ -9,8 +9,9 @@ import {
 } from "@material-tailwind/react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { FieldErrors } from "react-hook-form";
-import { useChipProps, useInputProps } from "@hooks";
-import { HelperText } from "@ui/atoms";
+import { useChipProps } from "@hooks/useChip";
+import { useInputProps } from "@hooks/useInput";
+import HelperText from "../../atoms/HelperText";
 
 // eslint-disable-next-line
 export interface AddChipProps extends InputProps, useChipProps, useInputProps {
