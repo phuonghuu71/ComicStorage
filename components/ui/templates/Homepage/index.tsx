@@ -12,7 +12,6 @@ import TabList from "../../molecules/TabList";
 import Comment from "../../molecules/Comment";
 import Pagination from "../../molecules/Pagination";
 import HeroSwiperList from "../../templates/HeroSwiperList";
-import useFetchSingle from "@hooks/useFetchSingle";
 import { ComicType, TotalComicType } from "@validators/Comic";
 
 import {
@@ -24,31 +23,32 @@ import {
 import { DateTime } from "luxon";
 import parse from "html-react-parser";
 import { useRouter } from "next/navigation";
+import { useFetchComics } from "@helpers/ClientFetch";
 
 export function Homepage() {
   const router = useRouter();
   const limit = 6;
   const [currPage, setCurrPage] = React.useState<number>(1);
-  const [comics, setComics] = React.useState<ComicType[] | []>([]);
-  const { data: fetchComics, isLoading } = useFetchSingle<TotalComicType>({
-    url: `/api/comic?page=${currPage}&limit=${limit}`,
-  });
-  const numberOfPages = (fetchComics?.numberOfPages || 0) as number;
 
-  React.useEffect(() => {
-    if (fetchComics) setComics(fetchComics.comics);
-  }, [fetchComics]);
+  const { data: fetchComics } = useFetchComics<TotalComicType>({
+    page: currPage,
+    limit: limit,
+  });
+
+  const numberOfPages = (fetchComics?.numberOfPages || 0) as number;
 
   const redirectChapterHandler = React.useCallback(
     (comic: ComicType) => {
-      router.push(`/${comic._id}?name=${comic.name}`);
+      router.push(`/${comic._id}`);
     },
     [router]
   );
 
+  console.log("re-render");
+
   return (
     <>
-      {/* <Container className="mb-4 border border-blue-gray-100">
+      <Container className="mb-4 border border-blue-gray-100">
         <Title
           title={
             <>
@@ -59,10 +59,10 @@ export function Homepage() {
         />
 
         <HeroSwiperList comics={COMIC_TEMPLATES} />
-      </Container> */}
+      </Container>
 
       <div className="grid grid-cols-12 gap-4 mb-4">
-        <Container className="border border-blue-gray-100 col-span-12 lg:col-span-8 flex flex-col items-center">
+        <Container className="border border-blue-gray-100 col-span-12 lg:col-span-8 flex flex-col items-center h-fit">
           <Title
             containerClass="self-start"
             title={
@@ -76,11 +76,11 @@ export function Homepage() {
             }
           />
 
-          {isLoading || comics.length === 0 ? (
+          {!fetchComics || fetchComics.comics.length === 0 ? (
             <SkeletonComic />
           ) : (
             <>
-              {comics.map((comic) => {
+              {fetchComics.comics.map((comic: ComicType) => {
                 const uploader = JSON.parse(
                   JSON.stringify(comic.uploader)
                 ) as User;
@@ -112,7 +112,7 @@ export function Homepage() {
           )}
         </Container>
 
-        {/* <aside className="col-span-12 lg:col-span-4 order-first lg:order-last">
+        <aside className="col-span-12 lg:col-span-4 order-first lg:order-last">
           <Container className="border border-blue-gray-100 h-fit mb-4">
             <Title
               title={
@@ -138,7 +138,7 @@ export function Homepage() {
 
             <Comment />
           </Container>
-        </aside> */}
+        </aside>
       </div>
     </>
   );

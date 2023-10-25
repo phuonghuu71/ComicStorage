@@ -27,8 +27,6 @@ export const authOptions: NextAuthOptions = {
 
           await connectToDB(props).catch(console.dir);
 
-          console.log(email);
-
           const userExist = await ComicUser.findOne({
             email: email,
           });

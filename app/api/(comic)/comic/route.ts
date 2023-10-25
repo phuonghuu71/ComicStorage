@@ -11,7 +11,11 @@ export const GET = async (req: NextApiRequest) => {
       mongoDBUri: process.env.MONGODB_URI,
     });
 
-    const res = await Comic.find({})
+    const res = await Comic.find({
+      "chapters.0": {
+        $exists: true,
+      },
+    })
       .populate("uploader")
       .sort({
         last_update: -1,
@@ -19,9 +23,7 @@ export const GET = async (req: NextApiRequest) => {
       .limit(_limit)
       .skip(_startIndex);
 
-    const countComics = await Comic.find({})
-      .select(["-cover", "-chapters"])
-      .countDocuments();
+    const countComics = res.length;
 
     const totalComic = Math.ceil(countComics / _limit);
 

@@ -138,3 +138,22 @@ export const BC_COMIC = (
     href: "/",
   },
 ];
+
+export const BC_CHAPTER = (
+  comicName: string | React.ReactNode,
+  comicLink: string,
+  chapterName: string
+): BreadcrumbProps[] => [
+  {
+    desc: <HomeIcon className="w-4 h-4" />,
+    href: "/",
+  },
+  {
+    desc: comicName,
+    href: comicLink,
+  },
+  {
+    desc: chapterName,
+    href: "/",
+  },
+];

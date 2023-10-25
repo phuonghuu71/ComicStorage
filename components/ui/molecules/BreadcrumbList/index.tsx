@@ -13,7 +13,7 @@ export function BreadcrumbList({ data }: { data: BreadcrumbProps[] }) {
   const router = useRouter();
   return (
     <Breadcrumbs
-      className="bg-transparent pt-0"
+      className="bg-transparent pt-0 pb-4"
       separator={
         <Typography as={"p"} className="text-sm">
           /

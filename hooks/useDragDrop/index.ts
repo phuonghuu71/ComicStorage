@@ -1,7 +1,8 @@
-import { urlType } from "@/components/ui/molecules/ChapterItem";
-import { UploadableFile } from "@/components/ui/molecules/MultipleFilesUpload";
-import { ChapterType } from "@/util/validations";
 import React from "react";
+
+import { UploadableFile } from "@ui/atoms/SingleFileUploadWithProgress";
+import { urlType } from "@ui/molecules/ChapterItem";
+import { ChapterType } from "@validators/Chapter";
 
 export interface UseDragDropProps {
   widgets: UploadableFile[];

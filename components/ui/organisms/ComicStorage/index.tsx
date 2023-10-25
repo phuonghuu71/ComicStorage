@@ -12,13 +12,14 @@ import OutlineInput from "../../molecules/OutlineInput";
 import Table from "../../molecules/Table";
 import Pagination from "../../molecules/Pagination";
 import useInput from "@hooks/useInput";
-import useFetchSingle from "@hooks/useFetchSingle";
+import { useFetchComicsById } from "@helpers/ClientFetch";
 import { ComicType, TotalComicType } from "@validators/Comic";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 
 export interface ComicStorageProps {
   userId: string;
@@ -26,18 +27,24 @@ export interface ComicStorageProps {
 
 export function ComicStorage({ userId }: ComicStorageProps) {
   const router = useRouter();
-  const limit = 6;
+  const limit = 5;
   const [currPage, setCurrPage] = React.useState<number>(1);
-  const [reload, setReload] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
   const [filter, setFilter, onChangeFilterHandler] = useInput();
   const [comic, setComic] = React.useState<ComicType>();
-  const [comics, setComics] = React.useState<ComicType[] | []>([]);
   const deleteId = React.useRef<unknown>();
-  const { data: fetchComics, isLoading } = useFetchSingle<TotalComicType>({
-    url: `/api/comic/${userId}?page=${currPage}&limit=${limit}`,
-    reload: reload,
+
+  const {
+    data: fetchComics,
+    error: errorComics,
+    isLoading: isLoadingComics,
+    mutate,
+  } = useFetchComicsById<TotalComicType>({
+    userId: userId,
+    page: currPage,
+    limit: limit,
   });
+
   const numberOfPages = (fetchComics?.numberOfPages || 0) as number;
 
   const editHandler = React.useCallback(
@@ -47,29 +54,24 @@ export function ComicStorage({ userId }: ComicStorageProps) {
     [router]
   );
 
-  const deleteHandler = React.useCallback(async (value: unknown) => {
-    try {
-      await fetch(`/api/comic/delete/${value}`, {
-        method: "DELETE",
-      }).then((response) => {
-        if (response.ok) {
-          toast.success("Delete item successfully");
-
-          setTimeout(() => {
-            setReload(true);
-          }, 1);
-        }
-      });
-    } catch (error) {
-      toast.error(`Failed to delete comic, Error: ${error}`);
-    } finally {
-      setReload(false);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (fetchComics) setComics(fetchComics.comics);
-  }, [fetchComics]);
+  const deleteHandler = React.useCallback(
+    async (value: unknown) => {
+      try {
+        await fetch(`/api/comic/delete/${value}`, {
+          method: "DELETE",
+        }).then((response) => {
+          if (response.ok) {
+            toast.success("Delete item successfully");
+          }
+        });
+      } catch (error) {
+        toast.error(`Failed to delete comic, Error: ${error}`);
+      } finally {
+        mutate();
+      }
+    },
+    [mutate]
+  );
 
   React.useEffect(() => {
     if (comic) router.push(`/dashboard/comic/${comic._id}/chapters`);
@@ -197,12 +199,12 @@ export function ComicStorage({ userId }: ComicStorageProps) {
         </div>
       </div>
 
-      {isLoading || comics.length === 0 ? (
+      {!fetchComics ? (
         <SkeletonTable />
       ) : (
         <>
           <Table
-            data={comics}
+            data={fetchComics.comics}
             columns={comicColumns}
             text={filter}
             setText={setFilter}

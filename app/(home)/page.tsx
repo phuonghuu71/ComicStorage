@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: "A place to store your comics",
 };
 
-export default function Page() {
+export default async function Page() {
   return <Homepage />;
 }

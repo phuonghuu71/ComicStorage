@@ -7,10 +7,8 @@ import Container from "../../atoms/Container";
 import Title from "../../atoms/Title";
 import BreadcrumbList from "../../molecules/BreadcrumbList";
 import FormAddEditComic from "../../organisms/FormAddEditComic";
-import useFetchSingle from "@hooks/useFetchSingle";
 import { ComicType } from "@validators/Comic";
-
-import { Spinner } from "@material-tailwind/react";
+import { useFetchComicById } from "@helpers/ClientFetch";
 
 export interface EditComicFormProps {
   comicId: string;
@@ -18,16 +16,12 @@ export interface EditComicFormProps {
 }
 
 export function EditComicForm({ comicId, userId }: EditComicFormProps) {
-  const { data } = useFetchSingle<ComicType>({
-    url: `/api/comic/get-by-comic-id/${comicId}`,
-  });
+  const { data: comicData } = useFetchComicById<ComicType>({ comicId });
 
   return (
     <>
       <BreadcrumbList
-        data={BC_DASHBOARD_COMIC_EDIT(
-          data?.name || <Spinner className="w-3 h-3" />
-        )}
+        data={BC_DASHBOARD_COMIC_EDIT(comicData ? comicData.name : "...")}
       />
 
       <Container
@@ -42,7 +36,7 @@ export function EditComicForm({ comicId, userId }: EditComicFormProps) {
 
         <FormAddEditComic
           isEdit
-          comicData={data}
+          comicData={comicData}
           userId={userId}
           statusData={STATUS}
           genreData={GENRE}

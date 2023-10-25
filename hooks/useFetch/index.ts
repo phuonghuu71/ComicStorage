@@ -1,33 +1,33 @@
-import React from "react";
-import { FetchProps } from "..";
+type fetchOptions = {
+  url: string;
+};
 
-export function useFetch<Data>({ url }: FetchProps) {
-  const [data, setData] = React.useState<Data[]>([]);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+type fetchWithPaginationOptions = fetchOptions & {
+  page: number;
+  limit: number;
+};
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(`${url}`);
-        const data: Data[] = await response.json();
+export const fetcherWithPagination = async ({
+  url,
+  page,
+  limit,
+}: fetchWithPaginationOptions) => {
+  const res = await fetch(`${url}?page=${page}&limit=${limit}`);
 
-        setData(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  return res.json();
+};
 
-    if (url) fetchData();
-  }, [url]);
+export async function useFetch<Data>({ url }: fetchOptions) {
+  const res = await fetch(`http://localhost:3000/${url}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = (await res.json()) as Data;
 
   return {
     data,
-    setData,
-    isLoading,
-    setIsLoading,
   };
 }
 

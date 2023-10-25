@@ -3,6 +3,7 @@ import EditComicForm from "@ui/templates/EditComicForm";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+
 import { authOptions } from "../../../../../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
@@ -19,9 +20,11 @@ export default async function Page({ params }: { params: comicParams }) {
 
   if (!session) notFound();
 
+  const { comicId } = params;
+
   return (
     <div className={`flex flex-col h-full`}>
-      <EditComicForm comicId={params.comicId} userId={session.user.id} />
+      <EditComicForm comicId={comicId} userId={session.user.id} />
     </div>
   );
 }

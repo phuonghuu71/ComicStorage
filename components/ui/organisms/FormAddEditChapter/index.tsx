@@ -6,9 +6,9 @@ import Container from "../../atoms/Container";
 import Title from "../../atoms/Title";
 import StaticInput from "../../molecules/StaticInput";
 import AddPages from "../AddPages";
-import useFetchSingle from "@hooks/useFetchSingle";
 import useDragDrop from "@hooks/useDragDrop";
 import { ChapterType, chapterValidator } from "@validators/Chapter";
+import { ComicType } from "@validators/Comic";
 
 import toast from "react-hot-toast";
 import { Button, Spinner } from "@material-tailwind/react";
@@ -18,9 +18,8 @@ import { useRouter } from "next/navigation";
 
 export interface FormAddEditChapterProps {
   cloudName: string;
-  comicName?: string;
-  comicId?: string;
-  chapterId?: string;
+  comicData: ComicType;
+  chapterData?: ChapterType;
   isEdit?: boolean;
 }
 
@@ -31,9 +30,8 @@ export interface PageProps {
 
 export function FormAddEditChapter({
   cloudName,
-  comicName,
-  comicId,
-  chapterId,
+  comicData,
+  chapterData,
   isEdit,
 }: FormAddEditChapterProps) {
   const {
@@ -53,20 +51,6 @@ export function FormAddEditChapter({
   });
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [chapterData, setChapterData] = React.useState<ChapterType>();
-
-  React.useEffect(() => {
-    async function fetchChapter() {
-      const fetchChapterData = await fetch(
-        `/api/chapter/get-chapter-by-id/${chapterId}`
-      );
-
-      const parsedChapterData = await fetchChapterData.json();
-      setChapterData(parsedChapterData as ChapterType);
-    }
-
-    if (isEdit && chapterId) fetchChapter();
-  }, [isEdit, chapterId]);
 
   const widgetsProps = useDragDrop({
     chapterData: chapterData,
@@ -93,8 +77,8 @@ export function FormAddEditChapter({
 
     await fetch(
       isEdit
-        ? `/api/chapter/${comicId}/edit/${chapterId}`
-        : `/api/chapter/${comicId}/add`,
+        ? `/api/chapter/${comicData._id}/edit/${chapterData?._id}`
+        : `/api/chapter/${comicData._id}/add`,
       {
         method: isEdit ? "PATCH" : "POST",
         body: JSON.stringify(validatedData),
@@ -115,7 +99,7 @@ export function FormAddEditChapter({
         if (response && response.ok) {
           if (isEdit) {
             toast.success("Successfully edit chapter.");
-            router.push(`/dashboard/comic/${comicId}/chapters`);
+            router.push(`/dashboard/comic/${comicData._id}/chapters`);
           } else {
             toast.success("Successfully create new chapter.");
             widgetsProps.setWidgets([]);
@@ -140,7 +124,7 @@ export function FormAddEditChapter({
       <Title
         title={isEdit ? "Edit Chapter" : "Add Chapter"}
         description={`Please ${isEdit ? "edit" : "add"} a chapter for ${
-          comicName ? `${comicName}` : "..."
+          comicData.name
         }`}
         containerClass="pt-4 mb-4 sticky top-0 bg-white z-10"
       />

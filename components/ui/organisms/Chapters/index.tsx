@@ -12,10 +12,10 @@ import BreadcrumbList from "../../molecules/BreadcrumbList";
 import OutlineInput from "../../molecules/OutlineInput";
 import Table from "../../molecules/Table";
 import Pagination from "../../molecules/Pagination";
-import useFetchSingle from "@hooks/useFetchSingle";
 import useInput from "@hooks/useInput";
-import { ComicType } from "@validators/Comic";
 import { ChapterType, TotalChapterType } from "@validators/Chapter";
+import { ComicType } from "@validators/Comic";
+import { useFetchChaptersById } from "@helpers/ClientFetch";
 
 import { Button, IconButton, Spinner } from "@material-tailwind/react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -24,66 +24,62 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export interface ChaptersProps {
-  comicId: string;
+  comicData: ComicType;
 }
 
-export function Chapters({ comicId }: ChaptersProps) {
+export function Chapters({ comicData }: ChaptersProps) {
   const [filter, setFilter, onChangeFilterHandler] = useInput();
-  const [reload, setReload] = React.useState<boolean>(false);
   const deleteId = React.useRef<unknown>();
   const [open, setOpen] = React.useState<boolean>(false);
   const [currPage, setCurrPage] = React.useState<number>(1);
   const limit = 6;
   const router = useRouter();
 
-  const { data } = useFetchSingle<ComicType>({
-    url: `/api/comic/get-by-comic-id/${comicId}`,
-  });
-
-  const { data: fetchChapters, isLoading } = useFetchSingle<TotalChapterType>({
-    url: `/api/chapter/${comicId}?page=${currPage}&limit=${limit}`,
-    reload: reload,
+  const {
+    data: fetchChapters,
+    isLoading: isLoadingChapters,
+    mutate,
+  } = useFetchChaptersById<TotalChapterType>({
+    comicId: comicData._id || "",
+    page: currPage,
+    limit: limit,
   });
 
   const chapters = (fetchChapters?.chapters[0] || []) as ChapterType[];
-  const numberOfPages = fetchChapters?.numberOfPages || (0 as number);
+  const numberOfPages = (fetchChapters?.numberOfPages || 0) as number;
 
   const addChapterHandler = React.useCallback(() => {
     function addChapter() {
-      router.push(`/dashboard/comic/${comicId}/chapters/add`);
+      router.push(`/dashboard/comic/${comicData._id}/chapters/add`);
     }
 
     addChapter();
-  }, [router, comicId]);
+  }, [router, comicData._id]);
 
   const editHandler = React.useCallback(
     (value: unknown) => {
-      router.push(`/dashboard/comic/${comicId}/chapters/${value}/edit`);
+      router.push(`/dashboard/comic/${comicData._id}/chapters/${value}/edit`);
     },
-    [router, comicId]
+    [router, comicData._id]
   );
 
   const deleteHandler = React.useCallback(
     async (chapterId: unknown) => {
       try {
-        await fetch(`/api/chapter/${comicId}/delete/${chapterId}`, {
+        await fetch(`/api/chapter/${comicData._id}/delete/${chapterId}`, {
           method: "DELETE",
         }).then((response) => {
           if (response.ok) {
             toast.success("Delete item successfully");
-
-            setTimeout(() => {
-              setReload(true);
-            }, 1);
           }
         });
       } catch (error) {
         toast.error(`Failed to delete chapter, Error: ${error}`);
       } finally {
-        setReload(false);
+        mutate();
       }
     },
-    [comicId]
+    [comicData._id, mutate]
   );
 
   const chapterColumns = React.useMemo<ColumnDef<ChapterType>[]>(
@@ -138,19 +134,13 @@ export function Chapters({ comicId }: ChaptersProps) {
 
   return (
     <>
-      <BreadcrumbList
-        data={BC_DASHBOARD_CHAPTERS(
-          data?.name || <Spinner className="w-3 h-3" />
-        )}
-      />
+      <BreadcrumbList data={BC_DASHBOARD_CHAPTERS(comicData.name)} />
 
       <Container className="flex-1 w-full overflow-y-scroll flex flex-col pt-0">
         <div className="flex items-center justify-between w-full">
           <Title
             title="Chapters"
-            description={`This place contains chapters of ${
-              data?.name ? `${data?.name}` : "..."
-            }`}
+            description={`This place contains chapters of ${comicData.name}`}
             containerClass="pt-4 mb-4 sticky top-0 bg-white z-10"
           />
 
@@ -166,7 +156,7 @@ export function Chapters({ comicId }: ChaptersProps) {
           </div>
         </div>
 
-        {isLoading ? (
+        {isLoadingChapters ? (
           <SkeletonTable />
         ) : (
           <>

@@ -1,3 +1,5 @@
+import { ComicType } from "@validators/Comic";
+
 import {
   ClockIcon,
   EyeIcon,
@@ -5,7 +7,7 @@ import {
   UserIcon,
   WifiIcon,
 } from "@heroicons/react/24/outline";
-import useFetchSingle from "@hooks/useFetchSingle";
+
 import {
   Card,
   CardBody,
@@ -14,46 +16,51 @@ import {
   Chip,
   Typography,
 } from "@material-tailwind/react";
+
 import Image from "next/image";
 import parse from "html-react-parser";
 
-import { ComicType } from "@validators/Comic";
+interface ComicDescriptionProps {
+  comicData: ComicType;
+  uploader: User;
+}
 
-export function ComicDescription({ comicId }: { comicId: string }) {
-  const { data: comicData } = useFetchSingle<ComicType>({
-    url: `/api/comic/get-by-comic-id/${comicId}`,
-  });
-
+export function ComicDescription({
+  comicData,
+  uploader,
+}: ComicDescriptionProps) {
   return (
-    <Card className="h-fit pt-6 w-fit flex flex-col items-center max-w-lg shrink-0">
-      <CardHeader className="relative max-w-[350px] max-h-[500px] m-0">
+    <Card className="h-fit pt-6 w-fit flex flex-col items-center max-w-md shrink-0">
+      <CardHeader className="relative max-w-[350px] max-h-[500px] m-0 shadow-none">
         <Image
           width={500}
           height={500}
-          src={comicData?.cover || ""}
+          src={comicData.cover}
           alt="cover"
           className="object-cover w-full h-full"
         />
       </CardHeader>
 
-      <CardBody className="pb-0">
+      <CardBody className="pb-0 min-w-lg">
         <Typography
           as={"h2"}
           variant="h2"
           className="text-purple-500 text-lg text-center mb-4"
         >
-          {comicData?.name || ""}
+          {comicData.name}
         </Typography>
 
         <div>
           <Typography as={"h3"} variant="h3" className="text-lg mb-2">
             Description
           </Typography>
-          <Typography as={"p"} variant="paragraph" className="text-justify">
-            {parse(comicData?.description || "")}
+
+          <Typography as={"div"} variant="paragraph" className="text-justify">
+            {parse(comicData.description)}
           </Typography>
         </div>
       </CardBody>
+
       <CardFooter className="w-full">
         <div className="flex gap-2 mb-2">
           <div className="flex items-center gap-x-1 shrink-0">
@@ -61,7 +68,7 @@ export function ComicDescription({ comicId }: { comicId: string }) {
             Uploader:
           </div>
           <Typography as={"a"} variant="paragraph" href="/">
-            {comicData?.uploader.name || ""}
+            {uploader.name}
           </Typography>
         </div>
 
@@ -71,7 +78,7 @@ export function ComicDescription({ comicId }: { comicId: string }) {
             Status:
           </div>
           <Typography as={"a"} variant="paragraph" href="/">
-            {comicData?.status || ""}
+            {comicData.status}
           </Typography>
         </div>
 
@@ -80,8 +87,8 @@ export function ComicDescription({ comicId }: { comicId: string }) {
             <EyeIcon className="w-4 h-4" strokeWidth={2} />
             Views:
           </div>
-          <Typography as={"a"} variant="paragraph" href="/">
-            {comicData?.views}
+          <Typography as={"a"} variant="paragraph">
+            {comicData.views}
           </Typography>
         </div>
 
