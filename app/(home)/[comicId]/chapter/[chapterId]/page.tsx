@@ -6,6 +6,10 @@ import {
   getChaptersByComicId,
   getComicByComicId,
 } from "@helpers/ServerFetch";
+import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../../api/auth/[...nextauth]/route";
+import { TotalCommentsType } from "@validators/Comment";
 
 export async function generateMetadata({
   params,
@@ -28,6 +32,17 @@ export async function generateMetadata({
   };
 }
 
+async function getCommentsByChapterId<CommentType>(
+  url: string,
+  chapterId: string
+) {
+  const res = await fetch(`${url}/api/comment/chapter/${chapterId}`, {
+    cache: "no-store",
+  });
+
+  return res.json() as CommentType;
+}
+
 export default async function Page({
   params,
 }: {
@@ -43,6 +58,10 @@ export default async function Page({
   const comicData = await getComicByComicId<ComicType>(url, comicId);
   const chapterData = await getChapterByChapterId<ChapterType>(url, chapterId);
   const chaptersData = await getChaptersByComicId<ChapterType[]>(url, comicId);
+  const commentData = await getCommentsByChapterId<TotalCommentsType>(
+    url,
+    chapterId
+  );
 
   const [comic, chapter, chapters] = await Promise.all([
     comicData,
@@ -50,11 +69,17 @@ export default async function Page({
     chaptersData,
   ]);
 
+  const session = await getServerSession(authOptions);
+
+  if (!session) notFound();
+
   return (
     <ChapterDetails
       chaptersData={chapters}
       chapterData={chapter}
+      commentData={commentData}
       comicData={comic}
+      userId={session.user.id}
     />
   );
 }

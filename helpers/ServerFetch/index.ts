@@ -31,3 +31,14 @@ export async function getChaptersByComicId<Data>(url: string, comicId: string) {
 
   return res.json() as Data;
 }
+
+export async function getCommentsByChapterId<CommentType>(
+  url: string,
+  chapterId: string
+) {
+  const res = await fetch(`${url}/api/comment/chapter/${chapterId}`, {
+    cache: "no-store",
+  });
+
+  return res.json() as CommentType;
+}

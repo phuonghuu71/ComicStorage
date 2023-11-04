@@ -11,6 +11,7 @@ import { Typography } from "@material-tailwind/react";
 import { ChapterType } from "@validators/Chapter";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { User } from "next-auth";
 
 export function ComicDetails({
   comicData,

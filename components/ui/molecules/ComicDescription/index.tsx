@@ -19,6 +19,7 @@ import {
 
 import Image from "next/image";
 import parse from "html-react-parser";
+import { User } from "next-auth";
 
 interface ComicDescriptionProps {
   comicData: ComicType;

@@ -2,27 +2,63 @@
 
 import { BC_CHAPTER } from "@assets/breadcrumbs";
 import { Button, Option, Select } from "@material-tailwind/react";
+import Container from "@ui/atoms/Container";
+import DynamicIcon from "@ui/atoms/DynamicIcon";
+import RichTextEditor from "@ui/atoms/RichTextEditor";
+import Title from "@ui/atoms/Title";
 import BreadcrumbList from "@ui/molecules/BreadcrumbList";
+import Comment from "@ui/molecules/Comment";
 import { ChapterType } from "@validators/Chapter";
 import { ComicType } from "@validators/Comic";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
+import {
+  CommentType,
+  TotalCommentsType,
+  commentValidator,
+} from "@validators/Comment";
 
 export default function ChapterDetails({
   comicData,
   chapterData,
   chaptersData,
+  commentData,
+  userId,
 }: {
   comicData: ComicType;
   chapterData: ChapterType;
   chaptersData: ChapterType[];
+  commentData: TotalCommentsType;
+  userId: string;
 }) {
   const router = useRouter();
   const [activeChapter, setActiveChapter] = React.useState<string | undefined>(
     chaptersData.find((chapter) => chapter._id === chapterData._id)?._id
   );
+
+  const {
+    register,
+    control,
+    setError,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CommentType>({
+    defaultValues: {
+      user: {
+        _id: userId,
+      },
+      message: "",
+      chapter: {
+        _id: chapterData._id,
+      },
+    },
+    resolver: zodResolver(commentValidator),
+  });
 
   React.useEffect(() => {
     if (activeChapter !== chapterData._id) router.replace(`${activeChapter}`);
@@ -39,6 +75,17 @@ export default function ChapterDetails({
       chaptersData.findIndex((chapter) => chapter._id === chapterId) + 1;
     setActiveChapter(chaptersData[findPrevIndex]._id);
   };
+
+  const onSubmit = async (data: CommentType) => {
+    await fetch(`/api/comment/chapter/add`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    router.refresh();
+  };
+
+  console.log(errors);
 
   return (
     <>
@@ -100,6 +147,68 @@ export default function ChapterDetails({
           </div>
         ))}
       </div>
+
+      <Container className="mb-4 border border-blue-gray-100">
+        <Title
+          title={
+            <>
+              <DynamicIcon
+                solid
+                icon="ChatBubbleLeftIcon"
+                className="w-5 h-5"
+              />
+              Comments
+            </>
+          }
+        />
+
+        <form
+          method="POST"
+          onSubmit={handleSubmit(onSubmit)}
+          className="mb-4 flex flex-col items-stretch"
+        >
+          <Controller
+            name="message"
+            control={control}
+            render={({ field: { name, onChange, value } }) => (
+              <RichTextEditor
+                name={name}
+                errors={errors}
+                title=""
+                id="comment"
+                value={value}
+                apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
+                onEditorChange={onChange}
+                containerClassname="mb-4 flex-1"
+                init={{
+                  resize: false,
+                  menubar: false,
+                  plugins: ["lists"],
+                  height: 215,
+                }}
+              />
+            )}
+          />
+
+          <Button type="submit" className="w-20 ml-auto">
+            Post
+          </Button>
+        </form>
+
+        <hr className="mb-4" />
+
+        {commentData.comments.map((comment, i) => (
+          <Comment
+            key={comment._id || i}
+            avatar={comment.user.image || ""}
+            name={comment.user.name || ""}
+            chapterName={comment.chapter.chapter_name || ""}
+            comicName={commentData.comic.name}
+            message={comment.message}
+            timestamp={comment.timestamp || ""}
+          />
+        ))}
+      </Container>
     </>
   );
 }

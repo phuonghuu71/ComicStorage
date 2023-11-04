@@ -24,6 +24,7 @@ import { DateTime } from "luxon";
 import parse from "html-react-parser";
 import { useRouter } from "next/navigation";
 import { useFetchComics } from "@helpers/ClientFetch";
+import { User } from "next-auth";
 
 export function Homepage() {
   const router = useRouter();
@@ -92,7 +93,7 @@ export function Homepage() {
                     title={comic.name}
                     imgUrl={comic.cover}
                     desc={parse(comic.description)}
-                    uploader={uploader.name}
+                    uploader={uploader.name || ""}
                     commentCount={0}
                     chapterCount={comic.chapters?.length || 0}
                     lastUpdated={DateTime.fromISO(
@@ -136,7 +137,7 @@ export function Homepage() {
               }
             />
 
-            <Comment />
+            {/* <Comment /> */}
           </Container>
         </aside>
       </div>

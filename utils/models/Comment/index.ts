@@ -1,14 +1,22 @@
 import { Schema, model, models } from "mongoose";
 
 const CommentSchema = new Schema({
-  user: {},
-  chapter: {},
-  timestamp: "",
-  message: {},
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  chapter: {
+    type: Schema.Types.ObjectId,
+    ref: "Chapter",
+  },
+  timestamp: {
+    type: String,
+  },
+  message: {
+    type: String,
+  },
 });
 
-// If the model is existed, it's re-assign the existed model
-// Else it creates a new one
 const Comment = models?.Comment || model("Comment", CommentSchema);
 
 export { Comment };

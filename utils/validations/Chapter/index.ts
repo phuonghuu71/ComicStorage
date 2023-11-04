@@ -7,7 +7,7 @@ export const pagesValidator = z.object({
 
 export const chapterValidator = z.object({
   _id: z.string().optional(),
-  chapter_name: z.string().nonempty("The chapter needs a name."),
+  chapter_name: z.string().min(1, "The chapter needs a name."),
   pages: z.array(pagesValidator).nonempty("At least add some pages."),
 });
 

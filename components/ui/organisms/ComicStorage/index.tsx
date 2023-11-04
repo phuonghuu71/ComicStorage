@@ -19,7 +19,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useSWR from "swr";
 
 export interface ComicStorageProps {
   userId: string;
@@ -115,7 +114,7 @@ export function ComicStorage({ userId }: ComicStorageProps) {
       },
       {
         header: "Chapters",
-        accessorFn: (row) => row.chapters?.length || 0,
+        accessorFn: (row) => (row.chapters ? row.chapters.length : 0),
         meta: {
           thClassName: "text-center",
           tdClassName: "text-center min-w-[100px]",
